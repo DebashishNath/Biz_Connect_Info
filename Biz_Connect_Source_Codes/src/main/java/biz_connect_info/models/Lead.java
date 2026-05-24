@@ -7,6 +7,7 @@ package biz_connect_info.models;
 import auth_info.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -60,4 +61,15 @@ public class Lead {
 
     @Column(name = "created_at")
     private Timestamp createdAt;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }

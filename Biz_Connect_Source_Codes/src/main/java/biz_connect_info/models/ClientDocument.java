@@ -7,6 +7,8 @@ package biz_connect_info.models;
 import auth_info.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.MessageResponse;
+
 import java.sql.Timestamp;
 
 @Entity
@@ -45,4 +47,15 @@ public class ClientDocument {
 
     @Column(name = "uploaded_at")
     private Timestamp uploadedAt;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }

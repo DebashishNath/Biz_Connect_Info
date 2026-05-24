@@ -6,6 +6,7 @@ package biz_connect_info.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -24,4 +25,15 @@ public class LeadStatus {
 
     @Column(name = "status_name")
     private String statusName;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }

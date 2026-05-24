@@ -6,6 +6,8 @@ package biz_connect_info.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.MessageResponse;
+
 @Entity
 @Table(name = "mst_city")
 @Data
@@ -22,4 +24,15 @@ public class City {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }

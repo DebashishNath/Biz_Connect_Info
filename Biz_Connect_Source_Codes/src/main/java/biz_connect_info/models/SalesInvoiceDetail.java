@@ -6,6 +6,8 @@ package biz_connect_info.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import utils.MessageResponse;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -43,4 +45,15 @@ public class SalesInvoiceDetail {
 
     @Column(name = "line_total")
     private BigDecimal lineTotal;
+
+    @Transient
+    private MessageResponse returnMessage;
+
+    public MessageResponse getReturnMessage() {
+        return returnMessage;
+    }
+
+    public void setReturnMessage(MessageResponse returnMessage) {
+        this.returnMessage = returnMessage;
+    }
 }
