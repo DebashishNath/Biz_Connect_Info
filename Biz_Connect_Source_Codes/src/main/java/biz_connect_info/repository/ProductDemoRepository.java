@@ -26,4 +26,10 @@ public interface ProductDemoRepository extends JpaRepository<ProductDemo, Long> 
     );
 
     List<ProductDemo> findTop10ByOrderByCreatedAtDesc();
+
+    List<ProductDemo> findByDemoFeedbackContainingIgnoreCase(String demoFeedback);
+
+    List<ProductDemo> findByMeetingLinkContainingIgnoreCase(String meetingLink);
+
+    List<ProductDemo> findByDemoDatetime(LocalDateTime demoDatetime);
 }

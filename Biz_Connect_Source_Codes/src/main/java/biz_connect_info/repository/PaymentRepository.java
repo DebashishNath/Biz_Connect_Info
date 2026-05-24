@@ -31,4 +31,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     );
 
     List<Payment> findTop10ByOrderByCreatedAtDesc();
+
+    List<Payment> findByTransactionReferenceContainingIgnoreCase(String transactionReference);
+
+    List<Payment> findByCurrencyCode(String currencyCode);
+
+    List<Payment> findByPaymentDate(LocalDate paymentDate);
 }

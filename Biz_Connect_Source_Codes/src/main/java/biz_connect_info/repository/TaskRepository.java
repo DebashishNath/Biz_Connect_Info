@@ -30,4 +30,10 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByTaskTitleContainingIgnoreCase(String taskTitle);
 
     List<Task> findTop10ByOrderByCreatedAtDesc();
+
+    List<Task> findByDueDateBeforeAndTaskStatusNot(LocalDateTime currentDateTime,String paymentStatus);
+
+    List<Task> findByTaskDescriptionContainingIgnoreCase(String taskDescription);
+
+    List<Task> findByDueDate(LocalDateTime dueDate);
 }

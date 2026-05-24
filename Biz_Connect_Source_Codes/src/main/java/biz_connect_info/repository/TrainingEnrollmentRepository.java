@@ -8,6 +8,7 @@ import biz_connect_info.models.TrainingEnrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,4 +32,14 @@ public interface TrainingEnrollmentRepository
     );
 
     List<TrainingEnrollment> findTop10ByOrderByCreatedAtDesc();
+
+    List<TrainingEnrollment> findByRemarksContainingIgnoreCase(String remarks);
+
+    List<TrainingEnrollment> findByCreatedById(Long userId);
+
+    List<TrainingEnrollment> findByEnrollmentDate(LocalDate enrollmentDate);
+
+    List<TrainingEnrollment> findByBatchNameContainingIgnoreCase(String batchName);
+
+    List<TrainingEnrollment> findByFeesAmountBetween(BigDecimal minFees,BigDecimal maxFees);
 }
