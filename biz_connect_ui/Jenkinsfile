@@ -1,0 +1,98 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    environment {
+        APP_NAME    = 'inventory-ui'
+        UI_DIR      = 'inventory-ui'
+        BUILD_DIR   = 'dist'
+        DEPLOY_DIR  = '/usr/share/nginx/html/inventory'
+        NODE_ENV    = 'production'
+        NGINX_USER  = 'www-data'   // ✅ Ubuntu/Debian safe default
+    }
+
+    stages {
+
+        stage('Checkout Source') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Verify Node & NPM') {
+            steps {
+                sh '''
+                    set -e
+                    node -v
+                    npm -v
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    set -euo pipefail
+                    cd "$UI_DIR"
+
+                    # Allow devDependencies for build
+                    unset NODE_ENV
+
+                    npm ci
+                '''
+            }
+        }
+
+        stage('Build UI') {
+            steps {
+                sh '''
+                    set -euo pipefail
+                    cd "$UI_DIR"
+
+                    unset NODE_ENV
+                    npm run build
+
+                    if [ ! -d "$BUILD_DIR" ]; then
+                        echo "❌ Build failed: dist directory not found"
+                        exit 1
+                    fi
+                '''
+            }
+        }
+
+        stage('Deploy to Nginx') {
+            steps {
+                sh '''
+                    set -euo pipefail
+
+                    sudo mkdir -p "$DEPLOY_DIR"
+                    sudo rm -rf "$DEPLOY_DIR"/*
+
+                    sudo cp -r "$UI_DIR/$BUILD_DIR"/* "$DEPLOY_DIR"/
+
+                    # Ensure readable permissions (ownership NOT required)
+                    sudo chmod -R 755 "$DEPLOY_DIR"
+
+                    sudo /usr/sbin/nginx -t
+                    sudo systemctl reload nginx
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Inventory UI deployed successfully"
+        }
+        failure {
+            echo "❌ Inventory UI deployment failed"
+        }
+        always {
+            cleanWs(deleteDirs: true)
+        }
+    }
+}

@@ -1,0 +1,28 @@
+  .mainmenu-background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image: url('../Images/BackgroundImage.jpg'); /* Replace with your own background image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .MuiButton-root {
+    color: white;
+  }
+  
+  .MuiMenu-root {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .MuiMenuItem-root {
+    color: white;
+  }
+  
+  .MuiPopover-paper {
+    background-color: rgba(0, 0, 0, 0.9);
+  }  
