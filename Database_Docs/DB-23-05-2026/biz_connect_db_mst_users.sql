@@ -34,7 +34,7 @@ CREATE TABLE `mst_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_username` (`username`),
   UNIQUE KEY `UK_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `mst_users` (
 
 LOCK TABLES `mst_users` WRITE;
 /*!40000 ALTER TABLE `mst_users` DISABLE KEYS */;
+INSERT INTO `mst_users` VALUES (1,'Sachin','Sachin Tendulkar','$2a$10$lJZdtGyZ64yV48Oa4kbKYu2Ihu4OTZmVmCCc9yNVFGUEkaS6FDF86','debasis.nath@gmail.com','+917975942642',NULL,'N');
 /*!40000 ALTER TABLE `mst_users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-23 11:56:17
+-- Dump completed on 2026-05-25 15:44:38

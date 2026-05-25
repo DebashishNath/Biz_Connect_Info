@@ -38,6 +38,7 @@ CREATE TABLE `trn_user_roles` (
 
 LOCK TABLES `trn_user_roles` WRITE;
 /*!40000 ALTER TABLE `trn_user_roles` DISABLE KEYS */;
+INSERT INTO `trn_user_roles` VALUES (1,1);
 /*!40000 ALTER TABLE `trn_user_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-23 11:56:16
+-- Dump completed on 2026-05-25 15:44:37

@@ -16,38 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `trn_tasks`
+-- Table structure for table `mst_city`
 --
 
-DROP TABLE IF EXISTS `trn_tasks`;
+DROP TABLE IF EXISTS `mst_city`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `trn_tasks` (
-  `task_id` bigint NOT NULL AUTO_INCREMENT,
-  `task_title` varchar(200) NOT NULL,
-  `task_description` text,
-  `related_lead_id` bigint DEFAULT NULL,
-  `assigned_to` bigint DEFAULT NULL,
-  `task_status` enum('OPEN','IN_PROGRESS','COMPLETED','CANCELLED') DEFAULT NULL,
-  `priority` enum('LOW','MEDIUM','HIGH') DEFAULT NULL,
-  `due_date` datetime DEFAULT NULL,
-  `created_by` bigint DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`task_id`),
-  KEY `fk_task_lead` (`related_lead_id`),
-  KEY `fk_task_assigned` (`assigned_to`),
-  CONSTRAINT `fk_task_assigned` FOREIGN KEY (`assigned_to`) REFERENCES `mst_users` (`id`),
-  CONSTRAINT `fk_task_lead` FOREIGN KEY (`related_lead_id`) REFERENCES `trn_leads` (`lead_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `mst_city` (
+  `city_id` int NOT NULL AUTO_INCREMENT,
+  `city_name` varchar(25) NOT NULL,
+  `state_id` int NOT NULL,
+  PRIMARY KEY (`city_id`),
+  KEY `fk_state_id_idx` (`state_id`),
+  CONSTRAINT `fk_state_id` FOREIGN KEY (`state_id`) REFERENCES `mst_state` (`state_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `trn_tasks`
+-- Dumping data for table `mst_city`
 --
 
-LOCK TABLES `trn_tasks` WRITE;
-/*!40000 ALTER TABLE `trn_tasks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `trn_tasks` ENABLE KEYS */;
+LOCK TABLES `mst_city` WRITE;
+/*!40000 ALTER TABLE `mst_city` DISABLE KEYS */;
+INSERT INTO `mst_city` VALUES (1,'Kolkata',1);
+/*!40000 ALTER TABLE `mst_city` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -59,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-25 15:44:36
+-- Dump completed on 2026-05-25 15:44:40

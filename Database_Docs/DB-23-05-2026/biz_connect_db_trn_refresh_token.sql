@@ -31,7 +31,7 @@ CREATE TABLE `trn_refresh_token` (
   UNIQUE KEY `UK_token` (`token`),
   UNIQUE KEY `UK_refresh_token_user_id` (`user_id`),
   CONSTRAINT `FK_refresh_token_user_id` FOREIGN KEY (`user_id`) REFERENCES `mst_users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `trn_refresh_token` (
 
 LOCK TABLES `trn_refresh_token` WRITE;
 /*!40000 ALTER TABLE `trn_refresh_token` DISABLE KEYS */;
+INSERT INTO `trn_refresh_token` VALUES (2,'2026-05-24 18:52:37.506689','675dec9e-2758-4c26-8a2e-c8d23d69571c',1);
 /*!40000 ALTER TABLE `trn_refresh_token` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-23 11:56:17
+-- Dump completed on 2026-05-25 15:44:37

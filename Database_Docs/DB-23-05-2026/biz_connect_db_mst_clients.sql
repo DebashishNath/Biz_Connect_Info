@@ -33,15 +33,15 @@ CREATE TABLE `mst_clients` (
   `website` varchar(150) DEFAULT NULL,
   `address_line1` varchar(200) DEFAULT NULL,
   `address_line2` varchar(200) DEFAULT NULL,
-  `city` varchar(80) DEFAULT NULL,
-  `state` varchar(80) DEFAULT NULL,
-  `country` varchar(80) DEFAULT NULL,
+  `city_id` int DEFAULT NULL,
   `postal_code` varchar(20) DEFAULT NULL,
   `remarks` text,
   `created_by` bigint DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`client_id`),
   KEY `fk_mst_clients_created_by` (`created_by`),
+  KEY `fk_client_city_id_idx` (`city_id`),
+  CONSTRAINT `fk_client_city_id` FOREIGN KEY (`city_id`) REFERENCES `mst_city` (`city_id`),
   CONSTRAINT `fk_mst_clients_created_by` FOREIGN KEY (`created_by`) REFERENCES `mst_users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -64,4 +64,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-23 11:56:15
+-- Dump completed on 2026-05-25 15:44:36
