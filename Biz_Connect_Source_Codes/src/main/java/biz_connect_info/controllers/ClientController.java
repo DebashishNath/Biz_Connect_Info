@@ -1,0 +1,43 @@
+package biz_connect_info.controllers;
+
+import biz_connect_info.models.Client;
+import biz_connect_info.service.Client.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import static utils.Constants.BIZ_CONNECT_API_PATH;
+
+@RestController
+@RequestMapping(BIZ_CONNECT_API_PATH + "client")
+@CrossOrigin(origins = "*")
+public class ClientController {
+
+    @Autowired
+    private ClientService clientService;
+
+    @PostMapping("/update")
+    public Client updateClient(
+            @RequestBody Client client
+    ) {
+        return clientService.updateClient(client);
+    }
+
+    @DeleteMapping("/delete/{clientId}")
+    public void deleteClient(
+            @PathVariable Long clientId
+    ) {
+        clientService.deleteClient(clientId);
+    }
+
+    @GetMapping("/{clientId}")
+    public Client getClientById(
+            @PathVariable Long clientId
+    ) {
+        return clientService.getClientById(clientId);
+    }
+
+    @GetMapping("/all")
+    public List<Client> getAllClients() {
+        return clientService.getAllClients();
+    }
+}
