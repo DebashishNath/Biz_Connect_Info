@@ -6,9 +6,7 @@ import {Client,Country,State,City} from '../Interfaces/bizConnectInterfaces';
 import { useAdminApi,MessageBox,getServerIP,SAVE_MSG_TITLE,ERROR_MSG_TITLE,getInputValue,setInputValue,
   clearAllTextFields,setFocus,useMessageHandler,ListRecords,ReButton,FormTemplate,ReTextField,
   ReInputLabel,ReSelect,useAuth } from '@kcndigitals/lib';
-
-const ADD_NEW_CLIENT = 'Add New Client';
-const EDIT_CLIENT = 'Edit Client';
+import { ADD_NEW_CLIENT, BIZ_CONNECT_API_PATH, clientTypes, EDIT_CLIENT } from '../Constants/BizConnectConstants';
 
 const ClientForm: React.FC = () => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -42,11 +40,6 @@ const ClientForm: React.FC = () => {
     handleCloseMessageBox
   } = useMessageHandler();
 
-  const clientTypes = [
-    { id: 'INDIVIDUAL', value: 'INDIVIDUAL' },
-    { id: 'COMPANY', value: 'COMPANY' }
-  ];
-
   const handleError = useCallback(
     (err: any) => {
       const errorMessage =
@@ -62,7 +55,7 @@ const ClientForm: React.FC = () => {
   // =========================
   const loadCountries = useCallback(async () => {
     try {
-      const url = `${getServerIP()}api/country/countries_list`;
+      const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `country/countries_list`;
       const response = await adminApi.get(url);
 
       if (response.data) {
@@ -79,7 +72,7 @@ const ClientForm: React.FC = () => {
   const loadStates = useCallback(
     async (selectedCountryId: number) => {
       try {
-        const url = `${getServerIP()}api/state/states_by_country/${selectedCountryId}`;
+        const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `state/states_by_country/${selectedCountryId}`;
         const response = await adminApi.get(url);
 
         if (response.data) {
@@ -98,7 +91,7 @@ const ClientForm: React.FC = () => {
   const loadCities = useCallback(
     async (selectedStateId: number) => {
       try {
-        const url = `${getServerIP()}api/city/cities_by_state/${selectedStateId}`;
+        const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `city/cities_by_state/${selectedStateId}`;
         const response = await adminApi.get(url);
 
         if (response.data) {
@@ -217,7 +210,6 @@ const ClientForm: React.FC = () => {
     if (!(await validateBeforeSave())) {
       return;
     }
-
     const postData = {
       clientId: clientId,
       clientType: clientType,
@@ -227,15 +219,14 @@ const ClientForm: React.FC = () => {
       mobileNo: getInputValue('mobileNo', 'string'),
       whatsappNo: getInputValue('whatsappNo', 'string'),
       website: getInputValue('website', 'string'),
-      addressLine1: getInputValue('addressLine1', 'string'),
-      addressLine2: getInputValue('addressLine2', 'string'),
+      address: getInputValue('address', 'string'),
       city: { cityId: cityId },
       postalCode: getInputValue('postalCode', 'string'),
       remarks: getInputValue('remarks', 'string')
     };
 
     try {
-      const url = `${getServerIP()}api/client/update_client`;
+      const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `client/update_client`;
 
       const response = await adminApi.post(url, postData);
 
@@ -276,7 +267,7 @@ const ClientForm: React.FC = () => {
     if (clientData) {
       setFormHeading(EDIT_CLIENT);
 
-      setClientId(clientData.clientId);
+      setClientId(editClientId);
 
       setClientType(clientData.clientType);
 
@@ -289,19 +280,15 @@ const ClientForm: React.FC = () => {
       setInputValue('mobileNo', clientData.mobileNo);
       setInputValue('whatsappNo', clientData.whatsappNo);
       setInputValue('website', clientData.website);
-      setInputValue('addressLine1', clientData.addressLine1);
-      setInputValue('addressLine2', clientData.addressLine2);
+      setInputValue('address', clientData.address);
       setInputValue('postalCode', clientData.postalCode);
       setInputValue('remarks', clientData.remarks);
 
-      const selectedCountryId =
-        clientData.city.state.country.countryId;
+      const selectedCountryId = clientData.city.state.country.countryId;
 
-      const selectedStateId =
-        clientData.city.state.stateId;
+      const selectedStateId = clientData.city.state.stateId;
 
-      const selectedCityId =
-        clientData.city.cityId;
+      const selectedCityId = clientData.city.cityId;
 
       setCountryId(selectedCountryId);
 
@@ -346,7 +333,7 @@ const ClientForm: React.FC = () => {
     }
 
     try {
-      const url = `${getServerIP()}api/client/clients_list`;
+      const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `client/clients_list`;
 
       const response = await adminApi.get(url);
 
@@ -363,16 +350,8 @@ const ClientForm: React.FC = () => {
   };
 
   return (
-    <FormTemplate
-      width={'95%'}
-      heading={formHeading}
-      onClose={() => setOpen(false)}
-    >
-      <MessageBox
-        open={showMessageBox}
-        onClose={handleCloseMessageBox}
-        title={title}
-      >
+    <FormTemplate width={'90%'} heading={formHeading} onClose={() => setOpen(false)} >
+      <MessageBox open={showMessageBox} onClose={handleCloseMessageBox} title={title}>
         {displayMessage}
       </MessageBox>
 
@@ -383,17 +362,8 @@ const ClientForm: React.FC = () => {
           </TableCell>
 
           <TableCell>
-            <ReSelect
-              id="clientType"
-              value={clientType}
-              options={clientTypes}
-              getOptionLabel={(opt) => opt.value}
-              getOptionValue={(opt) => opt.id}
-              onChange={(e) =>
-                setClientType(e.target.value)
-              }
-              width="180px"
-            />
+            <ReSelect id="clientType" value={clientType} options={clientTypes} getOptionLabel={(opt) => opt.value}
+              getOptionValue={(opt) => opt.id} onChange={(e) => setClientType(e.target.value) } width="200px" />
           </TableCell>
 
           <TableCell>
@@ -401,11 +371,7 @@ const ClientForm: React.FC = () => {
           </TableCell>
 
           <TableCell>
-            <ReTextField
-              id="companyName"
-              type="text"
-              width="300px"
-            />
+            <ReTextField id="companyName" type="text" width="250px"/>
           </TableCell>
 
           <TableCell>
@@ -413,11 +379,7 @@ const ClientForm: React.FC = () => {
           </TableCell>
 
           <TableCell>
-            <ReTextField
-              id="contactPersonName"
-              type="text"
-              width="250px"
-            />
+            <ReTextField id="contactPersonName" type="text" width="250px" />
           </TableCell>
         </TableRow>
 
@@ -427,11 +389,7 @@ const ClientForm: React.FC = () => {
           </TableCell>
 
           <TableCell>
-            <ReTextField
-              id="email"
-              type="email"
-              width="250px"
-            />
+            <ReTextField id="email" type="email" width="200px" />
           </TableCell>
 
           <TableCell>
@@ -442,7 +400,7 @@ const ClientForm: React.FC = () => {
             <ReTextField
               id="mobileNo"
               type="text"
-              width="180px"
+              width="200px"
             />
           </TableCell>
 
@@ -454,33 +412,18 @@ const ClientForm: React.FC = () => {
             <ReTextField
               id="whatsappNo"
               type="text"
-              width="180px"
+              width="200px"
             />
           </TableCell>
-        </TableRow>
-
-        <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
           <TableCell>
             <ReInputLabel labelValue="Website" />
           </TableCell>
 
-          <TableCell colSpan={2}>
+          <TableCell>
             <ReTextField
               id="website"
               type="text"
-              width="350px"
-            />
-          </TableCell>
-
-          <TableCell>
-            <ReInputLabel labelValue="Postal Code" />
-          </TableCell>
-
-          <TableCell>
-            <ReTextField
-              id="postalCode"
-              type="text"
-              width="150px"
+              width="200px"
             />
           </TableCell>
         </TableRow>
@@ -491,57 +434,40 @@ const ClientForm: React.FC = () => {
           </TableCell>
 
           <TableCell>
-            <ReSelect
-              id="countryCombo"
-              value={countryId.toString()}
-              options={countries}
-              getOptionLabel={(opt) => opt.countryName}
-              getOptionValue={(opt) => opt.countryId}
+            <ReSelect id="countryCombo" value={countryId.toString()} options={countries}
+              getOptionLabel={(opt) => opt.countryName} getOptionValue={(opt) => opt.countryId}
               onChange={async (e) => {
                 const selectedCountryId = Number(
                   e.target.value
                 );
-
                 setCountryId(selectedCountryId);
-
                 setStateId(0);
                 setCityId(0);
-
                 setCities([]);
-
                 await loadStates(selectedCountryId);
               }}
-              width="220px"
+              width="200px"
             />
           </TableCell>
-
           <TableCell>
             <ReInputLabel labelValue="State" />
           </TableCell>
 
           <TableCell>
-            <ReSelect
-              id="stateCombo"
-              value={stateId.toString()}
-              options={states}
-              getOptionLabel={(opt) => opt.stateName}
-              getOptionValue={(opt) => opt.stateId}
+            <ReSelect id="stateCombo" value={stateId.toString()} options={states}
+              getOptionLabel={(opt) => opt.stateName} getOptionValue={(opt) => opt.stateId}
               onChange={async (e) => {
                 const selectedStateId = Number(
                   e.target.value
                 );
-
                 setStateId(selectedStateId);
-
                 setCityId(0);
-
                 await loadCities(selectedStateId);
               }}
-              width="220px"
+              width="200px"
             />
           </TableCell>
-
-          <TableCell>
+           <TableCell>
             <ReInputLabel labelValue="City" />
           </TableCell>
 
@@ -555,36 +481,32 @@ const ClientForm: React.FC = () => {
               onChange={(e) =>
                 setCityId(Number(e.target.value))
               }
-              width="220px"
+              width="200px"
+            />
+          </TableCell>
+           <TableCell>
+            <ReInputLabel labelValue="Postal Code" />
+          </TableCell>
+
+          <TableCell>
+            <ReTextField
+              id="postalCode"
+              type="text"
+              width="200px"
             />
           </TableCell>
         </TableRow>
 
         <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
           <TableCell>
-            <ReInputLabel labelValue="Address Line 1" />
+            <ReInputLabel labelValue="Address" />
           </TableCell>
 
-          <TableCell colSpan={5}>
+          <TableCell colSpan={3}>
             <ReTextField
-              id="addressLine1"
+              id="address"
               type="multiline"
-              rows={2}
-              width="100%"
-            />
-          </TableCell>
-        </TableRow>
-
-        <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
-          <TableCell>
-            <ReInputLabel labelValue="Address Line 2" />
-          </TableCell>
-
-          <TableCell colSpan={5}>
-            <ReTextField
-              id="addressLine2"
-              type="multiline"
-              rows={2}
+              rows={3}
               width="100%"
             />
           </TableCell>
@@ -595,24 +517,21 @@ const ClientForm: React.FC = () => {
             <ReInputLabel labelValue="Remarks" />
           </TableCell>
 
-          <TableCell colSpan={5}>
+          <TableCell colSpan={3}>
             <ReTextField
               id="remarks"
               type="multiline"
-              rows={3}
+              rows={2}
               width="100%"
             />
           </TableCell>
-        </TableRow>
-
-        <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
-          <TableCell>
+          <TableCell />
+          <TableCell align='right'>
             <Typography variant="body2">
               <b>No Of Clients: {noOfRecords}</b>
             </Typography>
           </TableCell>
-
-          <TableCell colSpan={5} align="right">
+          <TableCell colSpan={3} align="right">
             <ReButton
               id="btnDisplayClients"
               label="Display Clients"

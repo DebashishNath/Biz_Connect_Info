@@ -1,1 +1,1 @@
-java -Xms512m -Xmx1024m -XX:+UseG1GC -jar D:\ImpProj\InventoryInfo\Inventory_Source_Codes\target\BusinessConnectApplication-0.0.1-SNAPSHOT.jar
+java -Xms512m -Xmx1024m -XX:+UseG1GC -jar D:\ImpProj\Biz_Connect_Info\Biz_Connect_Source_Codes\target\BusinessConnectApplication-0.0.1-SNAPSHOT.jar

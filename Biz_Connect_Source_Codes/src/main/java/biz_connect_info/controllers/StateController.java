@@ -36,7 +36,7 @@ public class StateController {
         return stateService.getStateById(stateId);
     }
 
-    @GetMapping("/country/{countryId}")
+    @GetMapping("/states_by_country/{countryId}")
     public List<State> getStatesByCountryId(
             @PathVariable Integer countryId
     ) {
@@ -44,7 +44,7 @@ public class StateController {
                 .getStatesByCountryId(countryId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/states_list")
     public List<State> getAllStates() {
         return stateService.getAllStates();
     }

@@ -37,7 +37,7 @@ public class CityController {
         return cityService.getCityById(cityId);
     }
 
-    @GetMapping("/state/{stateId}")
+    @GetMapping("/cities_by_state/{stateId}")
     public List<City> getCitiesByStateId(
             @PathVariable Integer stateId
     ) {
@@ -45,7 +45,7 @@ public class CityController {
                 .getCitiesByStateId(stateId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/cities_list")
     public List<City> getAllCities() {
         return cityService.getAllCities();
     }

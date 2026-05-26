@@ -43,8 +43,7 @@ export interface Client {
   mobileNo: string;
   whatsappNo: string;
   website: string;
-  addressLine1: string;
-  addressLine2: string;
+  address: string;
   city: City;
   postalCode: string;
   remarks: string;
@@ -225,4 +224,9 @@ export interface TrainingEnrollment {
   createdBy: User;
   createdAt: string;
   returnMessage: MessageResponse;
+}
+
+export interface Month {
+  monthId: number; 
+  monthName: string; 
 }

@@ -39,7 +39,7 @@ public class CountryController {
         return countryService.getCountryById(countryId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/countries_list")
     public List<Country> getAllCountries() {
         return countryService.getAllCountries();
     }

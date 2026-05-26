@@ -15,7 +15,7 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @PostMapping("/update")
+    @PostMapping("/update_client")
     public Client updateClient(
             @RequestBody Client client
     ) {
@@ -36,7 +36,7 @@ public class ClientController {
         return clientService.getClientById(clientId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/clients_list")
     public List<Client> getAllClients() {
         return clientService.getAllClients();
     }

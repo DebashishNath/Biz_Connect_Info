@@ -42,11 +42,8 @@ public class Client {
     @Column(name = "website")
     private String website;
 
-    @Column(name = "address_line1")
-    private String addressLine1;
-
-    @Column(name = "address_line2")
-    private String addressLine2;
+    @Column(name = "address")
+    private String address;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
