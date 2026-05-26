@@ -3,10 +3,8 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { AppBar,Toolbar,IconButton,Typography,MenuItem,MenuList,Paper,Popover,ListItemIcon,Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoryIcon from '@mui/icons-material/Category';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
-import SellIcon from '@mui/icons-material/Sell';
 
 import './mainmenu.css';
 import { useAuth, getFormattedDate, getFormattedTime } from '@kcndigitals/lib';
@@ -98,12 +96,7 @@ const MainMenuForm: React.FC = () => {
               <MenuItem
                 onClick={(e) =>
                   handleSubmenuOpen(e, [
-                    { label: 'Customer', path: 'customer', icon: <Inventory2Icon fontSize="small" /> },
-                    { label: 'Product Category', path:'product_category', icon: <Inventory2Icon fontSize="small" />},
-                    { label: 'Unit', path: 'unit', icon: <Inventory2Icon fontSize="small" /> },
-                    { label: 'Product', path: 'product', icon: <Inventory2Icon fontSize="small" /> },
-                    { label: 'Prospect', path: 'prospect', icon: <Inventory2Icon fontSize="small" /> },
-                    { label: 'Financial Year', path: 'financial_year', icon: <Inventory2Icon fontSize="small" /> }
+                    { label: 'Client', path: 'client', icon: <Inventory2Icon fontSize="small" /> },
                   ])
                 }
               >
@@ -111,7 +104,7 @@ const MainMenuForm: React.FC = () => {
                 Master
               </MenuItem>
 
-              <MenuItem
+              {/* <MenuItem
                 onClick={(e) =>
                   handleSubmenuOpen(e, [
                     { label: 'Follow Up Notes', path: 'followUp_notes', icon: <SellIcon fontSize="small" /> },
@@ -138,7 +131,7 @@ const MainMenuForm: React.FC = () => {
               }>
                 <ListItemIcon><CompareArrowsIcon fontSize="small" /></ListItemIcon>
                 Report
-              </MenuItem>
+              </MenuItem> */}
               
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon><LogoutIcon /></ListItemIcon>

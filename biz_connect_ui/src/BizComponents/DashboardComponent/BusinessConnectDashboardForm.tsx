@@ -1,6 +1,6 @@
 const BusinessConnectDashboardForm = () => {
   return (
-    <div>Welcome</div>
+    <div><h1>Welcome Dashboard</h1></div>
   );
 };
 

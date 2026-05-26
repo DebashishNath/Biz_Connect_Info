@@ -2,10 +2,11 @@ import React from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import {SignupForm,ForgotPassword,ResetPassword,AutoLogin,ProtectedRoute, Login, LoginTag, OtpVerificationScreen}  from '@kcndigitals/lib';
-import MainMenuForm from '../../BizComponents/MenuComponents/MainMenuForm';
+import MainMenuForm from './MainMenuForm';
 
 /* children under /mainmenu */
 import BusinessConnectDashboardForm           from '../DashboardComponent/BusinessConnectDashboardForm';
+import ClientForm from '../MasterComponent/ClientForm';
 
 interface BizConnectRoutesProps {
   isAutoLoginComplete: boolean;
@@ -54,10 +55,9 @@ const BizConnectRoutes: React.FC<BizConnectRoutesProps> = ({
         </ProtectedRoute>
       ),
       children: [
-        { index: true, element: <Navigate to="sales-dashboard" replace /> },
-
-        { path: 'business-connect-dashboard',          element: <BusinessConnectDashboardForm /> },
-        
+        { index: true, element: <Navigate to="business-connect-dashboard" replace /> },
+        { path: 'business-connect-dashboard', element: <BusinessConnectDashboardForm /> },
+        { path: 'client', element: <ClientForm /> }
       ],
     },
     /* catch-all */

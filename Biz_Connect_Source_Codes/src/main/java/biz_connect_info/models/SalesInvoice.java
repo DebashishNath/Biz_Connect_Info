@@ -12,7 +12,6 @@ import utils.MessageResponse;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "trn_sales_invoice")

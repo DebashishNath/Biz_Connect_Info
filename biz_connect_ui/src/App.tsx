@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider, LoginTag, setLoginTag } from '@kcndigitals/lib';
-import BizConnectRoutes from './BizComponents/MenuComponents/BizConnectRoutes';
+import BizConnectRoutes from './BizComponents/MenuComponent/BizConnectRoutes';
 
 const App: React.FC = () => {
   const [autoDone, setAutoDone] = useState(false);

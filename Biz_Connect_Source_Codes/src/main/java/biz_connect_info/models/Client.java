@@ -8,11 +8,7 @@ import auth_info.models.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import utils.MessageResponse;
-
-import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "mst_clients")
@@ -25,7 +21,8 @@ public class Client {
     private Long clientId;
 
     @Column(name = "client_type")
-    private String clientType;
+    @Enumerated(EnumType.STRING)
+    private ClientType clientType;
 
     @Column(name = "company_name")
     private String companyName;
