@@ -16,14 +16,14 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
-    @PostMapping("/update")
+    @PostMapping("/update_city")
     public City updateCity(
             @RequestBody City city
     ) {
         return cityService.updateCity(city);
     }
 
-    @DeleteMapping("/delete/{cityId}")
+    @DeleteMapping("/delete_city/{cityId}")
     public void deleteCity(
             @PathVariable Integer cityId
     ) {

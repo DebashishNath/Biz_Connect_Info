@@ -22,7 +22,7 @@ public class StateController {
         return stateService.updateState(state);
     }
 
-    @DeleteMapping("/delete/{stateId}")
+    @DeleteMapping("/delete_state/{stateId}")
     public void deleteState(
             @PathVariable Integer stateId
     ) {

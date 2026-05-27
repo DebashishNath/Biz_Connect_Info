@@ -96,8 +96,9 @@ const MainMenuForm: React.FC = () => {
               <MenuItem
                 onClick={(e) =>
                   handleSubmenuOpen(e, [
-                    { label: 'State', path: 'state', icon: <Inventory2Icon fontSize="small" /> },
                     { label: 'Country', path: 'country', icon: <Inventory2Icon fontSize="small" /> },
+                    { label: 'State', path: 'state', icon: <Inventory2Icon fontSize="small" /> },
+                    { label: 'City', path: 'city', icon: <Inventory2Icon fontSize="small" /> },
                     { label: 'Client', path: 'client', icon: <Inventory2Icon fontSize="small" /> },
                   ])
                 }

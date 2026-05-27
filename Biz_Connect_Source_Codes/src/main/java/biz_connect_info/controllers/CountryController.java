@@ -25,7 +25,7 @@ public class CountryController {
         return countryService.updateCountry(country);
     }
 
-    @DeleteMapping("/delete/{countryId}")
+    @DeleteMapping("/delete_country/{countryId}")
     public void deleteCountry(
             @PathVariable Integer countryId
     ) {

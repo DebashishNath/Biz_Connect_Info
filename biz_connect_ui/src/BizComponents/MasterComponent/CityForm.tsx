@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Table, TableRow, TableCell, Typography } from '@mui/material';
+import { Table, TableRow, TableCell, Typography, Stack } from '@mui/material';
 
 import {
   useAdminApi,
@@ -17,37 +17,30 @@ import {
   FormTemplate,
   ReTextField,
   ReSelect,
-  useAuth
+  useAuth,
+  ReInputLabel
 } from '@kcndigitals/lib';
 
-import { City, State } from '../Interfaces/bizConnectInterfaces';
-import { BIZ_CONNECT_API_PATH } from '../Constants/BizConnectConstants';
-
-const ADD_NEW_CITY = 'Add New City';
-const EDIT_CITY = 'Edit City';
+import { City, Country, State } from '../Interfaces/bizConnectInterfaces';
+import { ADD_NEW_CITY, BIZ_CONNECT_API_PATH, EDIT_CITY } from '../Constants/BizConnectConstants';
 
 const CityForm: React.FC = () => {
 
   const [isMounted, setIsMounted] = useState<boolean>(false);
-  const [citiesToDisplay, setCitiesToDisplay] = useState<City[]>([]);
-  const [states, setStates] = useState<State[]>([]);
-  const [cityId, setCityId] = useState<number | null>(null);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [countryId, setCountryId] = useState<number>(0);
+  const [statesToDisplay, setStatesToDisplay] = useState<State[]>([]);
   const [stateId, setStateId] = useState<number>(0);
+  const [citiesToDisplay, setCitiesToDisplay] = useState<City[]>([]);
+  const [cityId, setCityId] = useState<number>(0);
   const [noOfRecords, setNoOfRecords] = useState<number>(0);
   const [showCityList, setShowCityList] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(true);
   const [formHeading, setFormHeading] = useState<string>('');
-
+  
   const adminApi = useAdminApi();
-  const { token, isLoading } = useAuth();
 
-  const {
-    showMessageBox,
-    title,
-    displayMessage,
-    showMessage,
-    handleCloseMessageBox
-  } = useMessageHandler();
+  const { showMessageBox,title,displayMessage,showMessage,handleCloseMessageBox } = useMessageHandler();
 
   const handleError = useCallback((err: any) => {
 
@@ -57,18 +50,15 @@ const CityForm: React.FC = () => {
 
   }, [showMessage]);
 
-  const loadStates = useCallback(async () => {
-
+  // Load Countries
+  const loadCountries = useCallback(async () => {
     try {
-
-      const url = `${getServerIP()}api/bizconnect/state/states_list`;
-
+      const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `country/countries_list`;
       const response = await adminApi.get(url);
-
-      const data: State[] = response.data;
+      const data: Country[] = response.data;
 
       if (data) {
-        setStates(data);
+        setCountries(data);
       }
 
     } catch (err) {
@@ -77,6 +67,7 @@ const CityForm: React.FC = () => {
 
   }, [adminApi, handleError]);
 
+ 
   useEffect(() => {
 
     if (isMounted) {
@@ -84,18 +75,13 @@ const CityForm: React.FC = () => {
     }
 
     const init = async () => {
-
       setIsMounted(true);
       setFormHeading(ADD_NEW_CITY);
-
-      await loadStates();
-
-      setFocus('cityName');
+      await loadCountries();
+      setFocus('countryCombo');
     };
-
     init();
-
-  }, [isMounted, loadStates]);
+  }, [isMounted, loadCountries]);
 
   if (!open) return null;
 
@@ -123,9 +109,13 @@ const CityForm: React.FC = () => {
     if (!await validateBeforeSave()) {
       return;
     }
-
+    let city_id=null;
+    if(cityId > 0)
+    {
+      city_id=cityId;
+    }
     const postData = {
-      cityId: cityId,
+      cityId: city_id,
       cityName: getInputValue('cityName', 'string'),
       state: { stateId: stateId }
     };
@@ -141,7 +131,7 @@ const CityForm: React.FC = () => {
         if (cityData.cityId) {
           setCityId(cityData.cityId);
         }
-        await displayAllCities();
+        await displayAllCities(stateId);
 
       } else {
 
@@ -155,22 +145,17 @@ const CityForm: React.FC = () => {
   };
 
   const doEditOfCity = async (editCityId: number) => {
-
     const cityData = citiesToDisplay.find(
       (city) => city.cityId === editCityId
     );
 
     if (cityData) {
-
       setFormHeading(EDIT_CITY);
-
       setCityId(cityData.cityId);
-
       setInputValue('cityName', cityData.cityName);
-
       setStateId(cityData.state.stateId);
-
-      setFocus('cityName');
+      setCountryId(cityData.state.country.countryId);
+      setFocus('countryCombo');
     }
   };
 
@@ -179,38 +164,63 @@ const CityForm: React.FC = () => {
     setFormHeading(ADD_NEW_CITY);
     setCityId(0);
     setStateId(0);
+    setCountryId(0);
+    setCitiesToDisplay([]);
+    setNoOfRecords(0);
     clearAllTextFields();
-    setFocus('cityName');
+    setFocus('countryCombo');
   };
 
-  const displayAllCities = async () => {
-
-    if (isLoading || !token) {
-      return;
-    }
-
+  // Display All States
+  const displayAllStates = async (country_id:number) => 
+  {
+    setStateId(0);
+    setStatesToDisplay([]);
+    setCitiesToDisplay([]);
+    setInputValue("cityName","");
     try {
-
-      const url = `${getServerIP()}api/bizconnect/city/cities_by_state/` + stateId;
-
+      const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `state/states_by_country/` + country_id;
       const response = await adminApi.get(url);
-
-      const data: City[] = response.data;
+      const data: State[] = response.data;
 
       if (data && data.length > 0) {
-
-        setCitiesToDisplay(data);
-
-        setNoOfRecords(data.length);
-
-        setShowCityList(true);
+        setStatesToDisplay(data);
       }
-
     } catch (err) {
-
       handleError(err);
     }
   };
+
+  const displayAllCities = async(state_id:number) => 
+  {
+    try 
+    {
+      const url = `${getServerIP()}` + BIZ_CONNECT_API_PATH + `city/cities_by_state/` + state_id;
+      const response = await adminApi.get(url);
+      const data: City[] = response.data;
+      if (data && data.length > 0) 
+      {
+        setCitiesToDisplay(data);
+        setNoOfRecords(data.length);
+        setShowCityList(true);
+      }
+    } catch (err) 
+    {
+      handleError(err);
+    }
+  };
+
+  const country_change=(country_id:number)=>{
+    setNoOfRecords(0);
+    setCountryId(country_id);
+    displayAllStates(country_id);
+  }
+
+  const state_change =(state_id:number) =>
+  {
+    setStateId(state_id);
+    displayAllCities(state_id);
+  }
 
   return (
     <FormTemplate width={'50%'} heading={formHeading} onClose={() => setOpen(false)} >
@@ -219,32 +229,41 @@ const CityForm: React.FC = () => {
       </MessageBox>
       <Table size="small">
         <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
-          <TableCell width={'40%'}>
-            <ReTextField id="cityName" type="text" label="City Name" width="100%" />
+          <TableCell>
+            <ReInputLabel labelValue="Country" />
           </TableCell>
           <TableCell width={'40%'}>
-            <ReSelect id="stateCombo" value={stateId.toString()}  options={states}
+            <ReSelect id="countryCombo" value={countryId.toString()} options={countries}
+              getOptionLabel={(opt) => opt.countryName} getOptionValue={(opt) => opt.countryId}
+              onChange={(e) => country_change (Number(e.target.value))} width="80%"
+            />
+          </TableCell>
+          <TableCell>
+            <ReInputLabel labelValue="State" />
+          </TableCell>
+          <TableCell width={'40%'}>
+            <ReSelect id="stateCombo" value={stateId.toString()}  options={statesToDisplay}
               getOptionLabel={(opt) => opt.stateName} getOptionValue={(opt) => opt.stateId}
-              onChange={(e) => setStateId(Number(e.target.value))} width="100%"
+              onChange={(e) => state_change(Number(e.target.value))} width="80%"
             />
           </TableCell>
         </TableRow>
         <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
           <TableCell>
-            <Typography variant="body2">
-              <b>No Of Cities: {noOfRecords}</b>
-            </Typography>
+            <ReInputLabel labelValue="City" />
           </TableCell>
-        </TableRow>
-        <TableRow sx={{ '& td, & th': { borderBottom: 'none' } }}>
-          <TableCell colSpan={2} align="right">
-            <ReButton id="btnDisplayCities" label="Display Cities" buttonType="Display"
-              onClick={displayAllCities}
-            />
-            &nbsp;&nbsp;
-            <ReButton id="btnSaveCity" label="Save" buttonType="Save" onClick={saveCity}/>
-            &nbsp;&nbsp;
-            <ReButton id="btnRefreshCity" label="Clear" buttonType="Refresh" onClick={clearCity}/>
+          <TableCell width={'40%'}>
+            <ReTextField id="cityName" type="text" width="80%" />
+          </TableCell>
+          <TableCell />
+          <TableCell colSpan={3} align="left">
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Typography variant="body2">
+                <b>No Of Cities: {noOfRecords}</b>
+              </Typography>
+              <ReButton id="btnSaveCity" label="Save" buttonType="Save" onClick={saveCity} />
+              <ReButton id="btnRefreshCity" label="Clear" buttonType="Refresh" onClick={clearCity} />
+            </Stack>
           </TableCell>
         </TableRow>
       </Table>

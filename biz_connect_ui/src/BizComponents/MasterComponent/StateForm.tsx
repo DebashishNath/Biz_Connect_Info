@@ -22,8 +22,6 @@ const StateForm: React.FC = () => {
 
   const adminApi = useAdminApi();
 
-  const { token, isLoading } = useAuth();
-
   const {
     showMessageBox,
     title,
@@ -78,7 +76,7 @@ const StateForm: React.FC = () => {
 
       await loadCountries();
 
-      setFocus('stateName');
+      setFocus('countryCombo');
     };
 
     init();

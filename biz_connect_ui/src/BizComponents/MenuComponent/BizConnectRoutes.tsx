@@ -9,6 +9,7 @@ import BusinessConnectDashboardForm           from '../DashboardComponent/Busine
 import ClientForm from '../MasterComponent/ClientForm';
 import CountryForm from '../MasterComponent/CountryForm';
 import StateForm from '../MasterComponent/StateForm';
+import CityForm from '../MasterComponent/CityForm';
 
 interface BizConnectRoutesProps {
   isAutoLoginComplete: boolean;
@@ -59,8 +60,9 @@ const BizConnectRoutes: React.FC<BizConnectRoutesProps> = ({
       children: [
         { index: true, element: <Navigate to="business-connect-dashboard" replace /> },
         { path: 'business-connect-dashboard', element: <BusinessConnectDashboardForm /> },
-        { path: 'state', element: <StateForm /> },
         { path: 'country', element: <CountryForm /> },
+        { path: 'state', element: <StateForm /> },
+        { path: 'city', element: <CityForm /> },
         { path: 'client', element: <ClientForm /> }
       ],
     },
