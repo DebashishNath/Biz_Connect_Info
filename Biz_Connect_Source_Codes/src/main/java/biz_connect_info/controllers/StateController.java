@@ -15,7 +15,7 @@ public class StateController {
     @Autowired
     private StateService stateService;
 
-    @PostMapping("/update")
+    @PostMapping("/update_state")
     public State updateState(
             @RequestBody State state
     ) {

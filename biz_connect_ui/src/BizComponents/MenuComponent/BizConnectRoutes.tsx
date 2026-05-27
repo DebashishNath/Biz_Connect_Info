@@ -7,6 +7,8 @@ import MainMenuForm from './MainMenuForm';
 /* children under /mainmenu */
 import BusinessConnectDashboardForm           from '../DashboardComponent/BusinessConnectDashboardForm';
 import ClientForm from '../MasterComponent/ClientForm';
+import CountryForm from '../MasterComponent/CountryForm';
+import StateForm from '../MasterComponent/StateForm';
 
 interface BizConnectRoutesProps {
   isAutoLoginComplete: boolean;
@@ -57,6 +59,8 @@ const BizConnectRoutes: React.FC<BizConnectRoutesProps> = ({
       children: [
         { index: true, element: <Navigate to="business-connect-dashboard" replace /> },
         { path: 'business-connect-dashboard', element: <BusinessConnectDashboardForm /> },
+        { path: 'state', element: <StateForm /> },
+        { path: 'country', element: <CountryForm /> },
         { path: 'client', element: <ClientForm /> }
       ],
     },

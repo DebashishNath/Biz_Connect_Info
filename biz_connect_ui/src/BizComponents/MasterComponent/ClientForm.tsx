@@ -118,7 +118,7 @@ const ClientForm: React.FC = () => {
 
       await loadCountries();
 
-      setFocus('companyName');
+      setFocus('clientType');
     };
 
     init();
@@ -210,8 +210,13 @@ const ClientForm: React.FC = () => {
     if (!(await validateBeforeSave())) {
       return;
     }
+    let client_id=null;
+    if(clientId > 0)
+    {
+      client_id=clientId;
+    }
     const postData = {
-      clientId: clientId,
+      clientId: client_id,
       clientType: clientType,
       companyName: getInputValue('companyName', 'string'),
       contactPersonName: getInputValue('contactPersonName','string'),

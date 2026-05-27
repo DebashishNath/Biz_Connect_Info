@@ -3,6 +3,10 @@ import { Month } from "../Interfaces/bizConnectInterfaces";
 export const BIZ_CONNECT_API_PATH = 'api/biz_connect/';
 export const ADD_NEW_CLIENT = 'Add New Client';
 export const EDIT_CLIENT = 'Edit Client';
+export const ADD_NEW_COUNTRY = 'Add New Country';
+export const EDIT_COUNTRY = 'Edit Country';
+export const ADD_NEW_STATE = 'Add New State';
+export const EDIT_STATE = 'Edit State';
 
 export const MONTHS: Month[] = [
     { monthId: 1, monthName: "January" },

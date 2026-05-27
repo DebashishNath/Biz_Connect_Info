@@ -18,7 +18,7 @@ public class CountryController {
     @Autowired
     private CountryService countryService;
 
-    @PostMapping("/update")
+    @PostMapping("/update_country")
     public Country updateCountry(
             @RequestBody Country country
     ) {
