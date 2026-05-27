@@ -312,7 +312,7 @@ const ClientForm: React.FC = () => {
   // =========================
   const clearClient = async () => {
     clearAllTextFields();
-
+    setInputValue("email","");
     setClientId(0);
 
     setCountryId(0);
@@ -326,7 +326,7 @@ const ClientForm: React.FC = () => {
 
     setFormHeading(ADD_NEW_CLIENT);
 
-    setFocus('companyName');
+    setFocus('clientType');
   };
 
   // =========================
