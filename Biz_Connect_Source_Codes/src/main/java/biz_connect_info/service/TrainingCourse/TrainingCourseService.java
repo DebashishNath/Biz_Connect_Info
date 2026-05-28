@@ -1,6 +1,7 @@
 package biz_connect_info.service.TrainingCourse;
 
 import biz_connect_info.models.TrainingCourse;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,7 +12,7 @@ public interface TrainingCourseService {
             TrainingCourse trainingCourse
     );
 
-    void deleteTrainingCourse(Long courseId);
+    MessageResponse deleteTrainingCourse(Long courseId);
 
     TrainingCourse getTrainingCourseById(
             Long courseId

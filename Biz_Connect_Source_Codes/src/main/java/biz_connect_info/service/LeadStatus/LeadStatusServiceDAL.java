@@ -57,15 +57,18 @@ class LeadStatusServiceDAL extends LeadStatusServiceImpl {
     }
 
     @Override
-    public void deleteLeadStatus(Integer leadStatusId) {
-
-        try {
-
+    public MessageResponse deleteLeadStatus(Integer leadStatusId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             leadStatusRep.deleteById(leadStatusId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Lead status details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete lead status");
+            return msgResp;
         }
     }
 

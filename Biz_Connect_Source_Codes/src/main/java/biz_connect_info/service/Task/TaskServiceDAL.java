@@ -58,17 +58,18 @@ class TaskServiceDAL extends TaskServiceImpl {
     }
 
     @Override
-    public void deleteTask(Long taskId) {
-
-        try {
-
+    public MessageResponse deleteTask(Long taskId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             taskRep.deleteById(taskId);
-
-        } catch (Exception ex) {
-
-            System.out.println(
-                    "Error Is: " + ex.getMessage()
-            );
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Task details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete task");
+            return msgResp;
         }
     }
 

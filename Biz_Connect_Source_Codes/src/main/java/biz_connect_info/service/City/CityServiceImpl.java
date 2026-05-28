@@ -1,6 +1,7 @@
 package biz_connect_info.service.City;
 
 import biz_connect_info.models.City;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ abstract class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void deleteCity(Integer cityId) {
-        new CityServiceDAL().deleteCity(cityId);
+    public MessageResponse deleteCity(Integer cityId) {
+        return new CityServiceDAL().deleteCity(cityId);
     }
 
     @Override

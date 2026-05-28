@@ -1,6 +1,7 @@
 package biz_connect_info.service.Product;
 
 import biz_connect_info.models.Product;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ProductService {
 
     Product updateProduct(Product product);
 
-    void deleteProduct(Long productId);
+    MessageResponse deleteProduct(Long productId);
 
     Product getProductById(Long productId);
 

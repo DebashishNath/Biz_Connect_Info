@@ -63,21 +63,18 @@ class SalesInvoiceServiceDAL
     }
 
     @Override
-    public void deleteSalesInvoice(
-            Long salesInvoiceId
-    ) {
-
-        try {
-
-            salesInvoiceRep.deleteById(
-                    salesInvoiceId
-            );
-
-        } catch (Exception ex) {
-
-            System.out.println(
-                    "Error Is: " + ex.getMessage()
-            );
+    public MessageResponse deleteSalesInvoice(Long salesInvoiceId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
+            salesInvoiceRep.deleteById(salesInvoiceId);
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Sales invoice details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete sales invoice");
+            return msgResp;
         }
     }
 

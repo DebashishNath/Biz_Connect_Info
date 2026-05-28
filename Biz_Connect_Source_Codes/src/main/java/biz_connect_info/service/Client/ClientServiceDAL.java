@@ -54,15 +54,18 @@ class ClientServiceDAL extends ClientServiceImpl {
     }
 
     @Override
-    public void deleteClient(Long clientId) {
-
-        try {
-
+    public MessageResponse deleteClient(Long clientId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             clientRep.deleteById(clientId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Client details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete client");
+            return msgResp;
         }
     }
 

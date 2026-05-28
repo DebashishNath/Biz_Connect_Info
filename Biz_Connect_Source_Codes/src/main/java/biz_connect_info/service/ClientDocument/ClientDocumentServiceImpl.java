@@ -1,6 +1,7 @@
 package biz_connect_info.service.ClientDocument;
 
 import biz_connect_info.models.ClientDocument;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ abstract class ClientDocumentServiceImpl implements ClientDocumentService {
     }
 
     @Override
-    public void deleteClientDocument(Long documentId) {
-        new ClientDocumentServiceDAL().deleteClientDocument(documentId);
+    public MessageResponse deleteClientDocument(Long documentId) {
+        return new ClientDocumentServiceDAL().deleteClientDocument(documentId);
     }
 
     @Override

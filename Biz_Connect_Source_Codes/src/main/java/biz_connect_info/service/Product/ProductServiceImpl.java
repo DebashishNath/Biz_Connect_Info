@@ -1,6 +1,7 @@
 package biz_connect_info.service.Product;
 
 import biz_connect_info.models.Product;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,8 +16,8 @@ abstract class ProductServiceImpl
     }
 
     @Override
-    public void deleteProduct(Long productId) {
-        new ProductServiceDAL()
+    public MessageResponse deleteProduct(Long productId) {
+        return new ProductServiceDAL()
                 .deleteProduct(productId);
     }
 

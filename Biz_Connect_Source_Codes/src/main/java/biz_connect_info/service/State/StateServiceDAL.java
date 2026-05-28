@@ -54,15 +54,18 @@ class StateServiceDAL extends StateServiceImpl {
     }
 
     @Override
-    public void deleteState(Integer stateId) {
-
-        try {
-
+    public MessageResponse deleteState(Integer stateId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             stateRep.deleteById(stateId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "State details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete state");
+            return msgResp;
         }
     }
 

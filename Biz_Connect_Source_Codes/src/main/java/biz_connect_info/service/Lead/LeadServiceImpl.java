@@ -1,6 +1,7 @@
 package biz_connect_info.service.Lead;
 
 import biz_connect_info.models.Lead;
+import utils.MessageResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,8 +14,8 @@ abstract class LeadServiceImpl implements LeadService {
     }
 
     @Override
-    public void deleteLead(Long leadId) {
-        new LeadServiceDAL().deleteLead(leadId);
+    public MessageResponse deleteLead(Long leadId) {
+        return new LeadServiceDAL().deleteLead(leadId);
     }
 
     @Override

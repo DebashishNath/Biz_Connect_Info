@@ -4,6 +4,8 @@ import biz_connect_info.models.Client;
 import biz_connect_info.service.Client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
+
 import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
@@ -16,23 +18,20 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping("/update_client")
-    public Client updateClient(
-            @RequestBody Client client
-    ) {
+    public Client updateClient(@RequestBody Client client)
+    {
         return clientService.updateClient(client);
     }
 
-    @DeleteMapping("/delete/{clientId}")
-    public void deleteClient(
-            @PathVariable Long clientId
-    ) {
-        clientService.deleteClient(clientId);
+    @DeleteMapping("/delete_client/{clientId}")
+    public MessageResponse deleteClient(@PathVariable Long clientId)
+    {
+        return clientService.deleteClient(clientId);
     }
 
-    @GetMapping("/{clientId}")
-    public Client getClientById(
-            @PathVariable Long clientId
-    ) {
+    @GetMapping("/get_client_by_id/{clientId}")
+    public Client getClientById(@PathVariable Long clientId)
+    {
         return clientService.getClientById(clientId);
     }
 

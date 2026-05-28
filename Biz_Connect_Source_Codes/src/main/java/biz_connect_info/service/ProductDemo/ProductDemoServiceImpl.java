@@ -1,6 +1,7 @@
 package biz_connect_info.service.ProductDemo;
 
 import biz_connect_info.models.ProductDemo;
+import utils.MessageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,8 +18,8 @@ abstract class ProductDemoServiceImpl
     }
 
     @Override
-    public void deleteProductDemo(Long demoId) {
-        new ProductDemoServiceDAL()
+    public MessageResponse deleteProductDemo(Long demoId) {
+        return new ProductDemoServiceDAL()
                 .deleteProductDemo(demoId);
     }
 

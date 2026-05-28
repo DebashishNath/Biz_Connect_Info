@@ -1,6 +1,7 @@
 package biz_connect_info.service.State;
 
 import biz_connect_info.models.State;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface StateService {
 
     State updateState(State state);
 
-    void deleteState(Integer stateId);
+    MessageResponse deleteState(Integer stateId);
 
     State getStateById(Integer stateId);
 

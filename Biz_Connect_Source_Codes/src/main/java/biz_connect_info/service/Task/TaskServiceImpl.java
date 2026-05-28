@@ -1,6 +1,7 @@
 package biz_connect_info.service.Task;
 
 import biz_connect_info.models.Task;
+import utils.MessageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,8 +16,8 @@ abstract class TaskServiceImpl
     }
 
     @Override
-    public void deleteTask(Long taskId) {
-        new TaskServiceDAL()
+    public MessageResponse deleteTask(Long taskId) {
+        return new TaskServiceDAL()
                 .deleteTask(taskId);
     }
 

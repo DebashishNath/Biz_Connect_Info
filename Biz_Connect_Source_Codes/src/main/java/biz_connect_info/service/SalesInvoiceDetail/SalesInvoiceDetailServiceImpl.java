@@ -1,6 +1,7 @@
 package biz_connect_info.service.SalesInvoiceDetail;
 
 import biz_connect_info.models.SalesInvoiceDetail;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,10 +20,10 @@ abstract class SalesInvoiceDetailServiceImpl
     }
 
     @Override
-    public void deleteSalesInvoiceDetail(
+    public MessageResponse deleteSalesInvoiceDetail(
             Long salesInvoiceDetailId
     ) {
-        new SalesInvoiceDetailServiceDAL()
+        return new SalesInvoiceDetailServiceDAL()
                 .deleteSalesInvoiceDetail(
                         salesInvoiceDetailId
                 );

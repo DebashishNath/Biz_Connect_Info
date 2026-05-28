@@ -1,6 +1,7 @@
 package biz_connect_info.service.SalesInvoice;
 
 import biz_connect_info.models.SalesInvoice;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public interface SalesInvoiceService {
             SalesInvoice salesInvoice
     );
 
-    void deleteSalesInvoice(Long salesInvoiceId);
+    MessageResponse deleteSalesInvoice(Long salesInvoiceId);
 
     SalesInvoice getSalesInvoiceById(
             Long salesInvoiceId

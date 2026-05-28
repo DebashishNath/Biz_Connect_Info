@@ -1,6 +1,7 @@
 package biz_connect_info.service.Task;
 
 import biz_connect_info.models.Task;
+import utils.MessageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +10,7 @@ public interface TaskService {
 
     Task updateTask(Task task);
 
-    void deleteTask(Long taskId);
+    MessageResponse deleteTask(Long taskId);
 
     Task getTaskById(Long taskId);
 

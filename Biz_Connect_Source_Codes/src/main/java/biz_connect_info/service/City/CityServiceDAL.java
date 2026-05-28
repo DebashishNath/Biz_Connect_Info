@@ -54,15 +54,18 @@ class CityServiceDAL extends CityServiceImpl {
     }
 
     @Override
-    public void deleteCity(Integer cityId) {
-
-        try {
-
+    public MessageResponse deleteCity(Integer cityId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             cityRep.deleteById(cityId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "City details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete city");
+            return msgResp;
         }
     }
 

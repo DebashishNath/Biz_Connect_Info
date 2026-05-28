@@ -1,6 +1,7 @@
 package biz_connect_info.service.ClientDocument;
 
 import biz_connect_info.models.ClientDocument;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface ClientDocumentService {
 
     ClientDocument updateClientDocument(ClientDocument clientDocument);
 
-    void deleteClientDocument(Long documentId);
+    MessageResponse deleteClientDocument(Long documentId);
 
     ClientDocument getClientDocumentById(Long documentId);
 

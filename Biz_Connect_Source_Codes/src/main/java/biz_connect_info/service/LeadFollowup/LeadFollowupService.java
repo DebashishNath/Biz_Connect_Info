@@ -1,6 +1,7 @@
 package biz_connect_info.service.LeadFollowup;
 
 import biz_connect_info.models.LeadFollowup;
+import utils.MessageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +10,7 @@ public interface LeadFollowupService {
 
     LeadFollowup updateLeadFollowup(LeadFollowup leadFollowup);
 
-    void deleteLeadFollowup(Long followupId);
+    MessageResponse deleteLeadFollowup(Long followupId);
 
     LeadFollowup getLeadFollowupById(Long followupId);
 

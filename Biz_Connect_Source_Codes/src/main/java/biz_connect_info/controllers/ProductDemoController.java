@@ -9,7 +9,7 @@ import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
 @RestController
-@RequestMapping(BIZ_CONNECT_API_PATH + "product-demo")
+@RequestMapping(BIZ_CONNECT_API_PATH + "product_demo")
 @CrossOrigin(origins = "*")
 public class ProductDemoController {
 
@@ -17,7 +17,7 @@ public class ProductDemoController {
     private ProductDemoService
             productDemoService;
 
-    @PostMapping("/update")
+    @PostMapping("/update_product_demo")
     public ProductDemo updateProductDemo(
             @RequestBody ProductDemo productDemo
     ) {
@@ -25,14 +25,14 @@ public class ProductDemoController {
                 .updateProductDemo(productDemo);
     }
 
-    @DeleteMapping("/delete/{demoId}")
+    @DeleteMapping("/delete_product_demo/{demoId}")
     public void deleteProductDemo(
             @PathVariable Long demoId
     ) {
         productDemoService.deleteProductDemo(demoId);
     }
 
-    @GetMapping("/{demoId}")
+    @GetMapping("/get_product_demo/{demoId}")
     public ProductDemo getProductDemoById(
             @PathVariable Long demoId
     ) {
@@ -40,7 +40,7 @@ public class ProductDemoController {
                 .getProductDemoById(demoId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get_all_product_demos")
     public List<ProductDemo> getAllProductDemos() {
         return productDemoService
                 .getAllProductDemos();

@@ -5,6 +5,7 @@ import biz_connect_info.service.Country.CountryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -26,10 +27,10 @@ public class CountryController {
     }
 
     @DeleteMapping("/delete_country/{countryId}")
-    public void deleteCountry(
+    public MessageResponse deleteCountry(
             @PathVariable Integer countryId
     ) {
-        countryService.deleteCountry(countryId);
+        return countryService.deleteCountry(countryId);
     }
 
     @GetMapping("/{countryId}")

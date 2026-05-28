@@ -5,11 +5,13 @@ import biz_connect_info.service.ClientDocument.ClientDocumentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
+
 import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
 @RestController
-@RequestMapping(BIZ_CONNECT_API_PATH + "client-document")
+@RequestMapping(BIZ_CONNECT_API_PATH + "client_document")
 @CrossOrigin(origins = "*")
 public class ClientDocumentController {
 
@@ -26,14 +28,13 @@ public class ClientDocumentController {
     }
 
     @DeleteMapping("/delete/{documentId}")
-    public void deleteClientDocument(
+    public MessageResponse deleteClientDocument(
             @PathVariable Long documentId
     ) {
-        clientDocumentService
-                .deleteClientDocument(documentId);
+        return clientDocumentService.deleteClientDocument(documentId);
     }
 
-    @GetMapping("/{documentId}")
+    @GetMapping("/get_client_document_by_id/{documentId}")
     public ClientDocument getClientDocumentById(
             @PathVariable Long documentId
     ) {
@@ -41,7 +42,7 @@ public class ClientDocumentController {
                 .getClientDocumentById(documentId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get_all_client_documents")
     public List<ClientDocument>
     getAllClientDocuments() {
         return clientDocumentService

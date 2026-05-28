@@ -1,6 +1,7 @@
 package biz_connect_info.service.State;
 
 import biz_connect_info.models.State;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ abstract class StateServiceImpl implements StateService {
     }
 
     @Override
-    public void deleteState(Integer stateId) {
-        new StateServiceDAL().deleteState(stateId);
+    public MessageResponse deleteState(Integer stateId) {
+        return new StateServiceDAL().deleteState(stateId);
     }
 
     @Override

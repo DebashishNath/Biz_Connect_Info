@@ -8,7 +8,7 @@ import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
 @RestController
-@RequestMapping(BIZ_CONNECT_API_PATH + "lead-followup")
+@RequestMapping(BIZ_CONNECT_API_PATH + "lead_followup")
 @CrossOrigin(origins = "*")
 public class LeadFollowupController {
 
@@ -16,7 +16,7 @@ public class LeadFollowupController {
     private LeadFollowupService
             leadFollowupService;
 
-    @PostMapping("/update")
+    @PostMapping("/update_lead_followup")
     public LeadFollowup updateLeadFollowup(
             @RequestBody LeadFollowup leadFollowup
     ) {
@@ -24,7 +24,7 @@ public class LeadFollowupController {
                 .updateLeadFollowup(leadFollowup);
     }
 
-    @DeleteMapping("/delete/{followupId}")
+    @DeleteMapping("/delete_follow_up/{followupId}")
     public void deleteLeadFollowup(
             @PathVariable Long followupId
     ) {
@@ -32,7 +32,7 @@ public class LeadFollowupController {
                 .deleteLeadFollowup(followupId);
     }
 
-    @GetMapping("/{followupId}")
+    @GetMapping("/get_lead_followup/{followupId}")
     public LeadFollowup getLeadFollowupById(
             @PathVariable Long followupId
     ) {
@@ -40,7 +40,7 @@ public class LeadFollowupController {
                 .getLeadFollowupById(followupId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get_all_follow_ups")
     public List<LeadFollowup>
     getAllLeadFollowups() {
         return leadFollowupService

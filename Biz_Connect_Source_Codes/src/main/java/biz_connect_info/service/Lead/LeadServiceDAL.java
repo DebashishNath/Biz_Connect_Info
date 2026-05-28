@@ -55,15 +55,18 @@ class LeadServiceDAL extends LeadServiceImpl {
     }
 
     @Override
-    public void deleteLead(Long leadId) {
-
-        try {
-
+    public MessageResponse deleteLead(Long leadId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             leadRep.deleteById(leadId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Lead details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete lead");
+            return msgResp;
         }
     }
 

@@ -1,6 +1,7 @@
 package biz_connect_info.service.Lead;
 
 import biz_connect_info.models.Lead;
+import utils.MessageResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,7 +10,7 @@ public interface LeadService {
 
     Lead updateLead(Lead lead);
 
-    void deleteLead(Long leadId);
+    MessageResponse deleteLead(Long leadId);
 
     Lead getLeadById(Long leadId);
 

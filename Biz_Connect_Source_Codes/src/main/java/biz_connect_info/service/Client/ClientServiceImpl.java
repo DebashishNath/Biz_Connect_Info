@@ -1,6 +1,7 @@
 package biz_connect_info.service.Client;
 
 import biz_connect_info.models.Client;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ abstract class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteClient(Long clientId) {
-        new ClientServiceDAL().deleteClient(clientId);
+    public MessageResponse deleteClient(Long clientId) {
+        return new ClientServiceDAL().deleteClient(clientId);
     }
 
     @Override

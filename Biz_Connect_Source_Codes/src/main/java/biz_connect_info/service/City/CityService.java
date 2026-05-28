@@ -1,6 +1,7 @@
 package biz_connect_info.service.City;
 
 import biz_connect_info.models.City;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface CityService {
 
     City updateCity(City city);
 
-    void deleteCity(Integer cityId);
+    MessageResponse deleteCity(Integer cityId);
 
     City getCityById(Integer cityId);
 

@@ -55,15 +55,18 @@ class ClientDocumentServiceDAL extends ClientDocumentServiceImpl {
     }
 
     @Override
-    public void deleteClientDocument(Long documentId) {
-
-        try {
-
+    public MessageResponse deleteClientDocument(Long documentId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             clientDocumentRep.deleteById(documentId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Client document details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete client document");
+            return msgResp;
         }
     }
 

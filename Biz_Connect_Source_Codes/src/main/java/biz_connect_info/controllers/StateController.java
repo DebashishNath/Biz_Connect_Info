@@ -4,6 +4,8 @@ import biz_connect_info.models.State;
 import biz_connect_info.service.State.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
+
 import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
@@ -23,13 +25,12 @@ public class StateController {
     }
 
     @DeleteMapping("/delete_state/{stateId}")
-    public void deleteState(
-            @PathVariable Integer stateId
-    ) {
-        stateService.deleteState(stateId);
+    public MessageResponse deleteState(@PathVariable Integer stateId)
+    {
+        return stateService.deleteState(stateId);
     }
 
-    @GetMapping("/{stateId}")
+    @GetMapping("/get_state_by_id/{stateId}")
     public State getStateById(
             @PathVariable Integer stateId
     ) {

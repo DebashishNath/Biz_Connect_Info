@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import utils.CodeConstants;
 import utils.MessageResponse;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 class LeadSourceServiceDAL extends LeadSourceServiceImpl {
 
@@ -35,5 +38,41 @@ class LeadSourceServiceDAL extends LeadSourceServiceImpl {
             leadSource.setReturnMessage(msgResp);
             return leadSource;
         }
+    }
+
+    @Override
+    public MessageResponse deleteLeadSource(Integer leadSourceId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
+            leadSourceRep.deleteById(leadSourceId);
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Lead source details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete lead source");
+            return msgResp;
+        }
+    }
+
+    @Override
+    public Optional<LeadSource> getLeadSourceById(Integer leadSourceId){
+        return leadSourceRep.findById(leadSourceId);
+    }
+
+    @Override
+    public List<LeadSource> getAllLeadSources(){
+        return leadSourceRep.findAll();
+    }
+
+    @Override
+    public boolean existsBySourceName(String sourceName){
+        return leadSourceRep.existsBySourceName(sourceName);
+    }
+
+    @Override
+    public Optional<LeadSource> findBySourceName(String sourceName){
+        return leadSourceRep.findBySourceName(sourceName);
     }
 }

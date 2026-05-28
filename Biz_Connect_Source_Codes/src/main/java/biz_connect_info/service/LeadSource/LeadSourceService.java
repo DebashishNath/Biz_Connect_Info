@@ -7,16 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LeadSourceService {
-
     LeadSource updateLeadSource(LeadSource leadSource);
-
-//    MessageResponse deleteLeadSource(Integer leadSourceId);
-//
-//    Optional<LeadSource> getLeadSourceById(Integer leadSourceId);
-//
-//    List<LeadSource> getAllLeadSources();
-//
-//    boolean existsBySourceName(String sourceName);
-//
-//    Optional<LeadSource> findBySourceName(String sourceName);
+    MessageResponse deleteLeadSource(Integer leadSourceId);
+    Optional<LeadSource> getLeadSourceById(Integer leadSourceId);
+    List<LeadSource> getAllLeadSources();
+    boolean existsBySourceName(String sourceName);
+    Optional<LeadSource> findBySourceName(String sourceName);
 }

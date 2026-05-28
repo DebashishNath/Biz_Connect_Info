@@ -58,17 +58,18 @@ class PaymentServiceDAL extends PaymentServiceImpl {
     }
 
     @Override
-    public void deletePayment(Long paymentId) {
-
-        try {
-
+    public MessageResponse deletePayment(Long paymentId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             paymentRep.deleteById(paymentId);
-
-        } catch (Exception ex) {
-
-            System.out.println(
-                    "Error Is: " + ex.getMessage()
-            );
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Payment details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete payment");
+            return msgResp;
         }
     }
 

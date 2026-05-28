@@ -1,6 +1,7 @@
 package biz_connect_info.service.Payment;
 
 import biz_connect_info.models.Payment;
+import utils.MessageResponse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,8 +16,8 @@ abstract class PaymentServiceImpl
     }
 
     @Override
-    public void deletePayment(Long paymentId) {
-        new PaymentServiceDAL()
+    public MessageResponse deletePayment(Long paymentId) {
+        return new PaymentServiceDAL()
                 .deletePayment(paymentId);
     }
 

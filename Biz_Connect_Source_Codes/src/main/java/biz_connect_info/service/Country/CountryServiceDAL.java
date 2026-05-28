@@ -54,12 +54,18 @@ class CountryServiceDAL extends CountryServiceImpl {
     }
 
     @Override
-    public void deleteCountry(Integer countryId) {
-
-        try {
+    public MessageResponse deleteCountry(Integer countryId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             countryRep.deleteById(countryId);
-        } catch (Exception ex) {
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Country details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete country");
+            return msgResp;
         }
     }
 

@@ -68,21 +68,20 @@ class TrainingEnrollmentServiceDAL
     }
 
     @Override
-    public void deleteTrainingEnrollment(
+    public MessageResponse deleteTrainingEnrollment(
             Long enrollmentId
     ) {
-
-        try {
-
-            trainingEnrollmentRep.deleteById(
-                    enrollmentId
-            );
-
-        } catch (Exception ex) {
-
-            System.out.println(
-                    "Error Is: " + ex.getMessage()
-            );
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
+            trainingEnrollmentRep.deleteById(enrollmentId);
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Training enrollment details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete training enrollment");
+            return msgResp;
         }
     }
 

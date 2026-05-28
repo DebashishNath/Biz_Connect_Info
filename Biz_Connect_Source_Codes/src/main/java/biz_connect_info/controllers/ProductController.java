@@ -4,6 +4,8 @@ import biz_connect_info.models.Product;
 import biz_connect_info.service.Product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
+
 import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
@@ -22,21 +24,20 @@ public class ProductController {
         return productService.updateProduct(product);
     }
 
-    @DeleteMapping("/delete/{productId}")
-    public void deleteProduct(
-            @PathVariable Long productId
-    ) {
-        productService.deleteProduct(productId);
+    @DeleteMapping("/delete_product/{productId}")
+    public MessageResponse deleteProduct(@PathVariable Long productId)
+    {
+        return productService.deleteProduct(productId);
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/get_product_by_id/{productId}")
     public Product getProductById(
             @PathVariable Long productId
     ) {
         return productService.getProductById(productId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get_all_products")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }

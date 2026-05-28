@@ -1,6 +1,7 @@
 package biz_connect_info.service.LeadFollowup;
 
 import biz_connect_info.models.LeadFollowup;
+import utils.MessageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,8 +18,8 @@ abstract class LeadFollowupServiceImpl
     }
 
     @Override
-    public void deleteLeadFollowup(Long followupId) {
-        new LeadFollowupServiceDAL()
+    public MessageResponse deleteLeadFollowup(Long followupId) {
+        return new LeadFollowupServiceDAL()
                 .deleteLeadFollowup(followupId);
     }
 

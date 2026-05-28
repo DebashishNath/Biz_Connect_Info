@@ -1,6 +1,7 @@
 package biz_connect_info.service.Client;
 
 import biz_connect_info.models.Client;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface ClientService {
 
     Client updateClient(Client client);
 
-    void deleteClient(Long clientId);
+    MessageResponse deleteClient(Long clientId);
 
     Client getClientById(Long clientId);
 

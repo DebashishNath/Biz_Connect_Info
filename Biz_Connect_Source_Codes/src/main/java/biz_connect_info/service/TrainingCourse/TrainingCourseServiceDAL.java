@@ -66,17 +66,18 @@ class TrainingCourseServiceDAL
     }
 
     @Override
-    public void deleteTrainingCourse(Long courseId) {
-
-        try {
-
+    public MessageResponse deleteTrainingCourse(Long courseId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             trainingCourseRep.deleteById(courseId);
-
-        } catch (Exception ex) {
-
-            System.out.println(
-                    "Error Is: " + ex.getMessage()
-            );
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Course details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete course");
+            return msgResp;
         }
     }
 

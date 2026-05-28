@@ -1,6 +1,7 @@
 package biz_connect_info.service.TrainingEnrollment;
 
 import biz_connect_info.models.TrainingEnrollment;
+import utils.MessageResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,10 +21,10 @@ abstract class TrainingEnrollmentServiceImpl
     }
 
     @Override
-    public void deleteTrainingEnrollment(
+    public MessageResponse deleteTrainingEnrollment(
             Long enrollmentId
     ) {
-        new TrainingEnrollmentServiceDAL()
+        return new TrainingEnrollmentServiceDAL()
                 .deleteTrainingEnrollment(
                         enrollmentId
                 );

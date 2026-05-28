@@ -1,6 +1,7 @@
 package biz_connect_info.service.ProductDemo;
 
 import biz_connect_info.models.ProductDemo;
+import utils.MessageResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ProductDemoService {
 
     ProductDemo updateProductDemo(ProductDemo productDemo);
 
-    void deleteProductDemo(Long demoId);
+    MessageResponse deleteProductDemo(Long demoId);
 
     ProductDemo getProductDemoById(Long demoId);
 

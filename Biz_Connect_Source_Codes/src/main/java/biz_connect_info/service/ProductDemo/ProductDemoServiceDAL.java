@@ -62,17 +62,18 @@ class ProductDemoServiceDAL
     }
 
     @Override
-    public void deleteProductDemo(Long demoId) {
-
-        try {
-
+    public MessageResponse deleteProductDemo(Long demoId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             productDemoRep.deleteById(demoId);
-
-        } catch (Exception ex) {
-
-            System.out.println(
-                    "Error Is: " + ex.getMessage()
-            );
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Product demo details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete product demo");
+            return msgResp;
         }
     }
 

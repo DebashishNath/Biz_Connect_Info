@@ -5,6 +5,8 @@ import biz_connect_info.service.City.CityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
+
 import java.util.List;
 import static utils.Constants.BIZ_CONNECT_API_PATH;
 
@@ -24,13 +26,13 @@ public class CityController {
     }
 
     @DeleteMapping("/delete_city/{cityId}")
-    public void deleteCity(
+    public MessageResponse deleteCity(
             @PathVariable Integer cityId
     ) {
-        cityService.deleteCity(cityId);
+        return cityService.deleteCity(cityId);
     }
 
-    @GetMapping("/{cityId}")
+    @GetMapping("/get_city_by_id/{cityId}")
     public City getCityById(
             @PathVariable Integer cityId
     ) {

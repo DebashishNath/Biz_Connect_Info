@@ -1,6 +1,7 @@
 package biz_connect_info.service.LeadStatus;
 
 import biz_connect_info.models.LeadStatus;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ abstract class LeadStatusServiceImpl
     }
 
     @Override
-    public void deleteLeadStatus(Integer leadStatusId) {
-        new LeadStatusServiceDAL()
+    public MessageResponse deleteLeadStatus(Integer leadStatusId) {
+        return new LeadStatusServiceDAL()
                 .deleteLeadStatus(leadStatusId);
     }
 

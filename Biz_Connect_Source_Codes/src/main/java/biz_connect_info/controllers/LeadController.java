@@ -12,6 +12,7 @@ import biz_connect_info.service.Product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import utils.MessageResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +45,10 @@ public class LeadController {
     }
 
     @DeleteMapping("/delete_lead/{leadId}")
-    public void deleteLead(
+    public MessageResponse deleteLead(
             @PathVariable Long leadId
     ) {
-        leadService.deleteLead(leadId);
+        return leadService.deleteLead(leadId);
     }
 
     @GetMapping("/get_lead/{leadId}")

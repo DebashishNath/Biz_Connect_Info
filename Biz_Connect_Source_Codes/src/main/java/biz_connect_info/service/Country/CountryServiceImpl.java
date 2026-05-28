@@ -1,6 +1,7 @@
 package biz_connect_info.service.Country;
 
 import biz_connect_info.models.Country;
+import utils.MessageResponse;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ abstract class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public void deleteCountry(Integer countryId) {
-        new CountryServiceDAL().deleteCountry(countryId);
+    public MessageResponse deleteCountry(Integer countryId) {
+        return new CountryServiceDAL().deleteCountry(countryId);
     }
 
     @Override

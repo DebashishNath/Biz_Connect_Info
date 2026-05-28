@@ -58,15 +58,18 @@ class LeadFollowupServiceDAL extends LeadFollowupServiceImpl {
     }
 
     @Override
-    public void deleteLeadFollowup(Long followupId) {
-
-        try {
-
+    public MessageResponse deleteLeadFollowup(Long followupId) {
+        MessageResponse msgResp = new MessageResponse();
+        try
+        {
             leadFollowupRep.deleteById(followupId);
-
-        } catch (Exception ex) {
-
-            System.out.println("Error Is: " + ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.SUCCESS.getID(), "Lead follow up details deleted successfully!");
+            return msgResp;
+        }catch(Exception ex)
+        {
+            System.out.println(ex.getMessage());
+            msgResp = new MessageResponse(CodeConstants.FAILURE.getID(),"Failed to delete lead follow up");
+            return msgResp;
         }
     }
 
