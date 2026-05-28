@@ -1,10 +1,8 @@
 package biz_connect_info.controllers;
 
-import biz_connect_info.models.Client;
-import biz_connect_info.models.Lead;
-import biz_connect_info.models.LeadStatus;
-import biz_connect_info.models.Product;
+import biz_connect_info.models.*;
 import biz_connect_info.service.Client.ClientService;
+import biz_connect_info.service.Country.CountryService;
 import biz_connect_info.service.Lead.LeadService;
 
 import biz_connect_info.service.LeadStatus.LeadStatusService;
@@ -29,7 +27,7 @@ public class LeadController {
     private LeadService leadService;
 
     @Autowired
-    private ClientService clientService;
+    private CountryService countryService;
 
     @Autowired
     private ProductService productService;
@@ -63,14 +61,14 @@ public class LeadController {
         return leadService.getAllLeads();
     }
 
-    @RequestMapping(value="/lead-master-data", method = RequestMethod.GET)
+    @RequestMapping(value="/lead_master_data", method = RequestMethod.GET)
     public ResponseEntity<Map<String, Object>> getSaleMasterData() {
-        List<Client> customers = (List<Client>) clientService.getAllClients();
+        List<Country> countries = (List<Country>) countryService.getAllCountries();
         List<Product> products = (List<Product>) productService.getAllProducts();
         List<LeadStatus> leadStatuses = (List<LeadStatus>) leadStatusService.getAllLeadStatus();
 
         Map<String, Object> response = new HashMap<>();
-        response.put("customers", customers);
+        response.put("countries", countries);
         response.put("products", products);
         response.put("leadStatuses", leadStatuses);
 

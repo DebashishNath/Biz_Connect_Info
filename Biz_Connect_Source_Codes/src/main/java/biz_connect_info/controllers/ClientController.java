@@ -35,8 +35,13 @@ public class ClientController {
         return clientService.getClientById(clientId);
     }
 
-    @GetMapping("/clients_list")
+    @GetMapping("/get_all_clients")
     public List<Client> getAllClients() {
         return clientService.getAllClients();
+    }
+
+    @GetMapping("/get_all_clients_by_country/{countryId}")
+    public List<Client> get_all_clients_by_country(@PathVariable Integer countryId) {
+        return clientService.getAllClientsByCountryId(countryId);
     }
 }

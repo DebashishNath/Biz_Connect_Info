@@ -31,4 +31,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Client> findByCreatedById(Long userId);
 
     List<Client> findTop10ByOrderByCreatedAtDesc();
+
+    List<Client> findByCityStateCountryCountryId(Integer countryId);
+
 }

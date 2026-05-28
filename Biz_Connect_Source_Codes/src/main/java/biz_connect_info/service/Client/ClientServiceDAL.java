@@ -152,7 +152,8 @@ class ClientServiceDAL extends ClientServiceImpl {
     }
 
     @Override
-    public List<Client> searchClientsByContactPersonName(String contactPersonName) {
+    public List<Client> searchClientsByContactPersonName(String contactPersonName)
+    {
 
         try {
 
@@ -259,5 +260,10 @@ class ClientServiceDAL extends ClientServiceImpl {
 
             return false;
         }
+    }
+
+    @Override
+    public List<Client> getAllClientsByCountryId(Integer countryId){
+        return clientRep.findByCityStateCountryCountryId(countryId);
     }
 }

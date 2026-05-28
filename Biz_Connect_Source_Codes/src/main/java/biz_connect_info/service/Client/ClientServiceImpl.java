@@ -76,4 +76,10 @@ abstract class ClientServiceImpl implements ClientService {
     public boolean existsByMobileNo(String mobileNo) {
         return new ClientServiceDAL().existsByMobileNo(mobileNo);
     }
+
+    @Override
+    public List<Client> getAllClientsByCountryId(Integer countryId){
+        return new ClientServiceDAL().getAllClientsByCountryId(countryId);
+    }
+
 }

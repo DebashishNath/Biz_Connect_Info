@@ -34,4 +34,7 @@ public interface ClientService {
     boolean existsByEmail(String email);
 
     boolean existsByMobileNo(String mobileNo);
+
+    List<Client> getAllClientsByCountryId(Integer countryId);
+
 }
