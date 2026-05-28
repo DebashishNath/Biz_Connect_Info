@@ -36,8 +36,9 @@ public class Lead {
     @JoinColumn(name = "lead_status_id")
     private LeadStatus leadStatus;
 
-    @Column(name = "lead_source")
-    private String leadSource;
+    @ManyToOne
+    @JoinColumn(name = "lead_source_id")
+    private LeadSource leadSource;
 
     @Column(name = "expected_budget")
     private BigDecimal expectedBudget;
