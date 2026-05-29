@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { ERROR_MSG_TITLE,SAVE_MSG_TITLE,DELETE_MSG_TITLE,FormTemplate,FormContent,FormCell,MessageBox,
   ConfirmDialogBox,ReInputLabel,ReSelect,ReTextField,ReButton,ListRecords,useAdminApi,useMessageHandler,
   getServerIP,setFocus,clearAllTextFields,clearSingleTextField,getInputValue,setInputValue } from "@kcndigitals/lib";
-import { Box,Paper } from "@mui/material";
-import {Lead,LeadStatus,LeadSource,Product,Country } from "../Interfaces/bizConnectInterfaces";
+import { Box} from "@mui/material";
+import {Lead,LeadStatus,LeadSource,Product,Country, Client } from "../Interfaces/bizConnectInterfaces";
 
 import { useLeadMasterInitData } from "../Hooks/useLeadMasterInitData";
 
@@ -11,37 +11,22 @@ import { ADD_LEAD,EDIT_LEAD,BIZ_CONNECT_API_PATH } from "../Constants/BizConnect
 
 const LeadForm = () => {
   const adminApi = useAdminApi();
-
   const [open, setOpen] = useState(true);
-
   const [formHeading, setFormHeading] = useState<string>(ADD_LEAD);
-
   const [leadId, setLeadId] = useState<number>(0);
-
-  const [clientName, setClientName] = useState<string>("");
-
   const [mobileNo, setMobileNo] = useState<string>("");
-
   const [emailId, setEmailId] = useState<string>("");
-
   const [countryId, setCountryId] = useState<number>(0);
-
+  const [clientId, setClientId] = useState<number>(0);
   const [productId, setProductId] = useState<number>(0);
-
   const [leadStatusId, setLeadStatusId] = useState<number>(0);
-
   const [leadSourceId, setLeadSourceId] = useState<number>(0);
-
   const [expectedBudget, setExpectedBudget] = useState<number>(0);
-
   const [priorityLevel, setPriorityLevel] = useState<string>("MEDIUM");
-
   const [showLeadList, setShowLeadList] = useState<boolean>(false);
-
   const [leadList, setLeadList] = useState<Lead[]>([]);
-
+  const [clientList, setClientList] = useState<Client[]>([]);
   const [deleteLeadId, setDeleteLeadId] = useState<number>(0);
-
   const [showDialogBox, setShowDialogBox] = useState<boolean>(false);
 
   const {
@@ -77,21 +62,15 @@ const LeadForm = () => {
   );
 
   useEffect(() => {
-    setFocus("txtClientName");
-    displayLeadRecords();
+    setFocus("countryCombo");
+    //displayLeadRecords();
   }, []);
 
   const displayLeadRecords = async () => {
     try {
-      const url =
-        getServerIP() +
-        BIZ_CONNECT_API_PATH +
-        "lead/display_all_leads";
-
+      const url = getServerIP() + BIZ_CONNECT_API_PATH + "lead/display_all_leads";
       const response = await adminApi.get(url);
-
       setLeadList(response.data);
-
       setShowLeadList(true);
     } catch (err) {
       handleError(err);
@@ -100,55 +79,32 @@ const LeadForm = () => {
 
   const clearAll = () => {
     setLeadId(0);
-
-    setClientName("");
     setMobileNo("");
     setEmailId("");
-
     setCountryId(0);
     setProductId(0);
     setLeadStatusId(0);
     setLeadSourceId(0);
-
     setExpectedBudget(0);
-
     setPriorityLevel("MEDIUM");
-
     clearAllTextFields();
-
     setFormHeading(ADD_LEAD);
-
     setFocus("txtClientName");
   };
 
   const validateBeforeSave = (): boolean => {
-    if (clientName.trim() === "") {
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        "Client Name required",
-        "txtClientName"
-      );
+    if (countryId === 0) {
+      showMessage(true,ERROR_MSG_TITLE,"Country selection required","countriesCombo");
+      return false;
+    }
+
+    if (clientId=== 0) {
+      showMessage(true,ERROR_MSG_TITLE,"Select Client","clientCombo");
       return false;
     }
 
     if (mobileNo.trim() === "") {
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        "Mobile No required",
-        "txtMobileNo"
-      );
-      return false;
-    }
-
-    if (countryId === 0) {
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        "Country selection required",
-        "countriesCombo"
-      );
+      showMessage(true,ERROR_MSG_TITLE,"Mobile No required","txtMobileNo");
       return false;
     }
 
@@ -189,20 +145,15 @@ const LeadForm = () => {
     if (!validateBeforeSave()) {
       return;
     }
-
+    let lead_id=null;
+    if(leadId > 0)
+    {
+      lead_id=leadId;
+    }
     const leadData = {
-      leadId: leadId,
-
-      client: {
-        fullName: clientName,
-        mobileNo: mobileNo,
-        emailId: emailId,
-        country: {
-          countryId: countryId,
-        },
-      },
-
-      interestedProduct: {
+      leadId: lead_id,
+      client: { clientId: clientId  },
+      interestedProduct: { 
         productId: productId,
       },
 
@@ -235,7 +186,7 @@ const LeadForm = () => {
       const url =
         getServerIP() +
         BIZ_CONNECT_API_PATH +
-        "lead/save_lead";
+        "lead/update_lead";
 
       const response = await adminApi.post(
         url,
@@ -277,7 +228,7 @@ const LeadForm = () => {
 
     setLeadId(lead.leadId);
 
-    setClientName(lead.client.companyName);
+    setClientId(lead.client.clientId);
 
     setMobileNo(lead.client.mobileNo);
 
@@ -378,6 +329,34 @@ const LeadForm = () => {
     return null;
   }
 
+  const country_change = async(country_id:number)=>
+  {
+    setCountryId(country_id);
+    const url= getServerIP() + BIZ_CONNECT_API_PATH + "client/get_all_clients_by_country/" + country_id;
+    try
+    {
+      const response = await adminApi.get(url);
+      const data: Client[] = response.data;
+      if (data && data.length > 0) 
+      {
+        setClientList(data);
+      }
+    } catch (err) 
+    {
+      handleError(err);
+    }
+  }
+
+  const client_change = async(client_id:number)=>
+  {
+    setClientId(clientId);
+    const selectedClient = clientList.find((client) => client.clientId === client_id);
+    if(selectedClient){
+      setMobileNo(selectedClient.mobileNo);
+      setEmailId(selectedClient.email);
+    }
+  }
+
   return (
     <FormTemplate width={"90%"} heading={formHeading} onClose={() => setOpen(false)}>
       <MessageBox open={showMessageBox} onClose={handleCloseMessageBox} title={title}>
@@ -393,18 +372,25 @@ const LeadForm = () => {
 
         <Box>
           <FormCell>
-            <ReInputLabel labelValue="Client Name" />
+            <ReInputLabel labelValue="Country" />
           </FormCell>
 
           <FormCell>
-            <ReTextField
-              id="txtClientName"
-              type="text"
-              width="250px"
-              value={clientName}
-              onChange={(e) =>
-                setClientName(e.target.value)
-              }
+            <ReSelect id="countriesCombo" value={countryId} options={countries}
+              getOptionLabel={(opt: Country) => opt.countryName } 
+              getOptionValue={(opt: Country) => opt.countryId } width="220px"
+              onChange={(e) => country_change(Number(e.target.value)) }
+            />
+          </FormCell>
+          <FormCell>
+            <ReInputLabel labelValue="Client" />
+          </FormCell>
+
+          <FormCell>
+             <ReSelect id="clientsCombo" value={clientId} options={clientList}
+              getOptionLabel={(opt: Client) => opt.companyName } 
+              getOptionValue={(opt: Client) => opt.clientId } width="250px"
+              onChange={(e) => client_change(Number(e.target.value)) }
             />
           </FormCell>
 
@@ -413,57 +399,17 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell>
-            <ReTextField
-              id="txtMobileNo"
-              type="text"
-              width="180px"
-              value={mobileNo}
-              onChange={(e) =>
-                setMobileNo(e.target.value)
-              }
-            />
-          </FormCell>
-
-          <FormCell>
-            <ReInputLabel labelValue="Email" />
-          </FormCell>
-
-          <FormCell>
-            <ReTextField
-              id="txtEmailId"
-              type="email"
-              width="250px"
-              value={emailId}
-              onChange={(e) =>
-                setEmailId(e.target.value)
-              }
-            />
+            <ReTextField id="txtMobileNo" type="text" width="180px" value={mobileNo} disabled={true} />
           </FormCell>
         </Box>
 
         <Box>
           <FormCell>
-            <ReInputLabel labelValue="Country" />
+            <ReInputLabel labelValue="Email" />
           </FormCell>
 
           <FormCell>
-            <ReSelect
-              id="countriesCombo"
-              value={countryId}
-              options={countries}
-              getOptionLabel={(opt: Country) =>
-                opt.countryName
-              }
-              getOptionValue={(opt: Country) =>
-                opt.countryId
-              }
-              width="220px"
-              onChange={(e) =>
-                setCountryId(
-                  Number(e.target.value)
-                )
-              }
-            />
+            <ReTextField id="txtEmailId" type="email" width="220px" value={emailId}  disabled={true} />
           </FormCell>
 
           <FormCell>
@@ -471,22 +417,11 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell>
-            <ReSelect
-              id="productsCombo"
-              value={productId}
-              options={products}
-              getOptionLabel={(opt: Product) =>
-                opt.productName
-              }
-              getOptionValue={(opt: Product) =>
-                opt.productId
-              }
+            <ReSelect id="productsCombo" value={productId} options={products}
+              getOptionLabel={(opt: Product) => opt.productName }
+              getOptionValue={(opt: Product) => opt.productId   }
               width="250px"
-              onChange={(e) =>
-                setProductId(
-                  Number(e.target.value)
-                )
-              }
+              onChange={(e) => setProductId(Number(e.target.value))}
             />
           </FormCell>
 
@@ -495,22 +430,10 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell>
-            <ReSelect
-              id="leadStatusCombo"
-              value={leadStatusId}
-              options={leadStatuses}
-              getOptionLabel={(
-                opt: LeadStatus
-              ) => opt.statusName}
-              getOptionValue={(
-                opt: LeadStatus
-              ) => opt.leadStatusId}
-              width="220px"
-              onChange={(e) =>
-                setLeadStatusId(
-                  Number(e.target.value)
-                )
-              }
+            <ReSelect id="leadStatusCombo" value={leadStatusId} options={leadStatuses}
+              getOptionLabel={(opt: LeadStatus) => opt.statusName}
+              getOptionValue={(opt: LeadStatus) => opt.leadStatusId}
+              width="220px" onChange={(e) =>setLeadStatusId(Number(e.target.value))}
             />
           </FormCell>
         </Box>
@@ -521,22 +444,10 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell>
-            <ReSelect
-              id="leadSourceCombo"
-              value={leadSourceId}
-              options={leadSources}
-              getOptionLabel={(
-                opt: LeadSource
-              ) => opt.sourceName}
-              getOptionValue={(
-                opt: LeadSource
-              ) => opt.leadSourceId}
-              width="220px"
-              onChange={(e) =>
-                setLeadSourceId(
-                  Number(e.target.value)
-                )
-              }
+            <ReSelect id="leadSourceCombo" value={leadSourceId} options={leadSources}
+              getOptionLabel={(opt: LeadSource) => opt.sourceName} 
+              getOptionValue={(opt: LeadSource) => opt.leadSourceId} width="220px"
+              onChange={(e) => setLeadSourceId(Number(e.target.value))}
             />
           </FormCell>
 

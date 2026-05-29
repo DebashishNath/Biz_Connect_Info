@@ -39,7 +39,7 @@ public class LeadController {
     @Autowired
     private LeadSourceService leadSourceService;
 
-    @PostMapping("/update_client_lead")
+    @PostMapping("/update_lead")
     public Lead updateLead(
             @RequestBody Lead lead
     ) {
