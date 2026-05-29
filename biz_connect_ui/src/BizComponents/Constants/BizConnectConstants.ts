@@ -9,6 +9,8 @@ export const ADD_NEW_STATE = 'Add New State';
 export const EDIT_STATE = 'Edit State';
 export const ADD_NEW_CITY = 'Add New City';
 export const EDIT_CITY = 'Edit City';
+export const ADD_LEAD = 'Add Lead';
+export const EDIT_LEAD = 'Edit Lead';
 
 export const MONTHS: Month[] = [
     { monthId: 1, monthName: "January" },

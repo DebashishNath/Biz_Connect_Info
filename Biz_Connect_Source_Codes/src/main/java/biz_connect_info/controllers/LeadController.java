@@ -5,6 +5,7 @@ import biz_connect_info.service.Client.ClientService;
 import biz_connect_info.service.Country.CountryService;
 import biz_connect_info.service.Lead.LeadService;
 
+import biz_connect_info.service.LeadSource.LeadSourceService;
 import biz_connect_info.service.LeadStatus.LeadStatusService;
 import biz_connect_info.service.Product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class LeadController {
 
     @Autowired
     private LeadStatusService leadStatusService;
+
+    @Autowired
+    private LeadSourceService leadSourceService;
 
     @PostMapping("/update_client_lead")
     public Lead updateLead(
@@ -66,11 +70,13 @@ public class LeadController {
         List<Country> countries = (List<Country>) countryService.getAllCountries();
         List<Product> products = (List<Product>) productService.getAllProducts();
         List<LeadStatus> leadStatuses = (List<LeadStatus>) leadStatusService.getAllLeadStatus();
+        List<LeadSource> leadSources = (List<LeadSource>) leadSourceService.getAllLeadSources();
 
         Map<String, Object> response = new HashMap<>();
         response.put("countries", countries);
         response.put("products", products);
         response.put("leadStatuses", leadStatuses);
+        response.put("leadSources", leadSources);
 
         return ResponseEntity.ok(response);
     }

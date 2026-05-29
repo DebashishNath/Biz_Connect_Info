@@ -10,6 +10,7 @@ import ClientForm from '../MasterComponent/ClientForm';
 import CountryForm from '../MasterComponent/CountryForm';
 import StateForm from '../MasterComponent/StateForm';
 import CityForm from '../MasterComponent/CityForm';
+import LeadForm from '../TransactionComponent/LeadForm';
 
 interface BizConnectRoutesProps {
   isAutoLoginComplete: boolean;
@@ -63,7 +64,8 @@ const BizConnectRoutes: React.FC<BizConnectRoutesProps> = ({
         { path: 'country', element: <CountryForm /> },
         { path: 'state', element: <StateForm /> },
         { path: 'city', element: <CityForm /> },
-        { path: 'client', element: <ClientForm /> }
+        { path: 'client', element: <ClientForm /> },
+        { path: 'lead', element: <LeadForm /> }
       ],
     },
     /* catch-all */

@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { AppBar,Toolbar,IconButton,Typography,MenuItem,MenuList,Paper,Popover,ListItemIcon,Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CategoryIcon from '@mui/icons-material/Category';
+
 import LogoutIcon from '@mui/icons-material/Logout';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 
@@ -19,8 +20,7 @@ const MainMenuForm: React.FC = () => {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const [submenuAnchor, setSubmenuAnchor] = useState<HTMLElement | null>(null);
   const [submenuItems, setSubmenuItems] = useState<
-    { label: string; path?: string; icon: React.ReactNode }[]
-  >([]);
+    { label: string; path?: string; icon: React.ReactNode }[]>([]);
 
 
   useEffect(() => {
@@ -107,22 +107,18 @@ const MainMenuForm: React.FC = () => {
                 Master
               </MenuItem>
 
-              {/* <MenuItem
+              <MenuItem
                 onClick={(e) =>
                   handleSubmenuOpen(e, [
-                    { label: 'Follow Up Notes', path: 'followUp_notes', icon: <SellIcon fontSize="small" /> },
-                    { label: 'Sale', path: 'list_of_sale', icon: <SellIcon fontSize="small" /> },
-                    { label: 'Monthly income', path: 'monthly_income', icon: <SellIcon fontSize="small" /> },
-                    { label: 'Partial Payment', path: 'partial_pay_detail', icon: <SellIcon fontSize="small" /> },
-                    { label: 'Meeting Schedule', path: 'meeting_schedule', icon: <SellIcon fontSize="small" /> }
+                    { label: 'Lead', path: 'lead', icon: <Inventory2Icon fontSize="small" /> },
                   ])
                 }
               >
-                <ListItemIcon><CompareArrowsIcon /></ListItemIcon>
+                <ListItemIcon><CategoryIcon /></ListItemIcon>
                 Transaction
               </MenuItem>
               
-              <MenuItem onClick={(e) =>
+              {/* <MenuItem onClick={(e) =>
                 handleSubmenuOpen(e, [
                   { label: 'Customer Analyzer Dashboard', path: 'customer-analyzer-dashboard', icon: <SellIcon fontSize="small" /> },
                   { label: 'Customer Sales Report', path: 'customer_sale_report', icon: <SellIcon fontSize="small" /> },

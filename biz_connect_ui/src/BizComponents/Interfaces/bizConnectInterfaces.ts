@@ -226,6 +226,12 @@ export interface TrainingEnrollment {
   returnMessage: MessageResponse;
 }
 
+export interface LeadSource {
+    leadSourceId: number;
+    sourceName: string;
+    returnMessage: MessageResponse;
+}
+
 export interface Month {
   monthId: number; 
   monthName: string; 
