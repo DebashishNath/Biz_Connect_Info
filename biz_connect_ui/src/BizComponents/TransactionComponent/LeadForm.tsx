@@ -29,49 +29,33 @@ const LeadForm = () => {
   const [deleteLeadId, setDeleteLeadId] = useState<number>(0);
   const [showDialogBox, setShowDialogBox] = useState<boolean>(false);
 
-  const {
-    showMessageBox,
-    title,
-    displayMessage,
-    showMessage,
-    handleCloseMessageBox,
-  } = useMessageHandler();
+  const { showMessageBox,title,displayMessage,showMessage,handleCloseMessageBox } = useMessageHandler();
 
-  const {
-    countries,
-    products,
-    leadStatuses,
-    leadSources,
-    loading,
-    error,
-  } = useLeadMasterInitData();
+  const { countries,products,leadStatuses,leadSources,loading,error } = useLeadMasterInitData();
 
   const handleError = useCallback(
     (err: any) => {
-      const errorMessage =
-        err instanceof Error ? err.message : String(err);
-
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        errorMessage,
-        ""
-      );
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      showMessage(true,ERROR_MSG_TITLE,errorMessage,"");
     },
     [showMessage]
   );
 
   useEffect(() => {
-    setFocus("countryCombo");
-    //displayLeadRecords();
+    setFocus("countriesCombo");
   }, []);
 
-  const displayLeadRecords = async () => {
-    try {
-      const url = getServerIP() + BIZ_CONNECT_API_PATH + "lead/display_all_leads";
+  const displayLeadRecords = async (country_id:number) => 
+  {
+    try 
+    {
+      const url = getServerIP() + BIZ_CONNECT_API_PATH + "lead/get_all_leads_by_country/" + country_id;
       const response = await adminApi.get(url);
-      setLeadList(response.data);
-      setShowLeadList(true);
+      if(response && response.data && response.data.length > 0)
+      {
+        setLeadList(response.data);
+        setShowLeadList(true);
+      }
     } catch (err) {
       handleError(err);
     }
@@ -89,7 +73,8 @@ const LeadForm = () => {
     setPriorityLevel("MEDIUM");
     clearAllTextFields();
     setFormHeading(ADD_LEAD);
-    setFocus("txtClientName");
+    setShowLeadList(false);
+    setFocus("countriesCombo");
   };
 
   const validateBeforeSave = (): boolean => {
@@ -109,32 +94,17 @@ const LeadForm = () => {
     }
 
     if (productId === 0) {
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        "Product selection required",
-        "productsCombo"
-      );
+      showMessage(true,ERROR_MSG_TITLE,"Product selection required","productsCombo");
       return false;
     }
 
     if (leadStatusId === 0) {
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        "Lead Status selection required",
-        "leadStatusCombo"
-      );
+      showMessage(true,ERROR_MSG_TITLE,"Lead Status selection required","leadStatusCombo");
       return false;
     }
 
     if (leadSourceId === 0) {
-      showMessage(
-        true,
-        ERROR_MSG_TITLE,
-        "Lead Source selection required",
-        "leadSourceCombo"
-      );
+      showMessage(true,ERROR_MSG_TITLE,"Lead Source selection required","leadSourceCombo");
       return false;
     }
 
@@ -153,70 +123,29 @@ const LeadForm = () => {
     const leadData = {
       leadId: lead_id,
       client: { clientId: clientId  },
-      interestedProduct: { 
-        productId: productId,
-      },
-
-      leadStatus: {
-        leadStatusId: leadStatusId,
-      },
-
-      leadSource: {
-        leadSourceId: leadSourceId,
-      },
-
-      expectedBudget: Number(
-        getInputValue("txtExpectedBudget", "number")
-      ),
-
-      expectedClosureDate: getInputValue(
-        "txtExpectedClosureDate",
-        "string"
-      ),
-
+      interestedProduct: { productId: productId },
+      leadStatus: { leadStatusId: leadStatusId },
+      leadSource: { leadSourceId: leadSourceId },
+      expectedBudget: Number(getInputValue("txtExpectedBudget", "number")),
+      expectedClosureDate: getInputValue("txtExpectedClosureDate","string"),
       priorityLevel: priorityLevel,
-
-      remarks: getInputValue(
-        "txtRemarks",
-        "string"
-      ),
+      remarks: getInputValue("txtRemarks","string")
     };
 
     try {
-      const url =
-        getServerIP() +
-        BIZ_CONNECT_API_PATH +
-        "lead/update_lead";
-
-      const response = await adminApi.post(
-        url,
-        leadData
-      );
-
+      const url = getServerIP() + BIZ_CONNECT_API_PATH + "lead/update_lead";
+      const response = await adminApi.post(url,leadData);
       const data: Lead = response.data;
-
-      if (data.returnMessage.code === 0) {
-        showMessage(
-          true,
-          SAVE_MSG_TITLE,
-          data.returnMessage.message,
-          ""
-        );
-
+      if (data.returnMessage.code === 0) 
+      {
+        showMessage(true,SAVE_MSG_TITLE,data.returnMessage.message,"");
         setLeadId(data.leadId);
-
         setFormHeading(EDIT_LEAD);
-
-        displayLeadRecords();
-
+        displayLeadRecords(countryId);
         clearSingleTextField("txtRemarks");
-      } else {
-        showMessage(
-          true,
-          ERROR_MSG_TITLE,
-          data.returnMessage.message,
-          ""
-        );
+      } else 
+      {
+        showMessage(true,ERROR_MSG_TITLE,data.returnMessage.message,"");
       }
     } catch (err) {
       handleError(err);
@@ -225,92 +154,44 @@ const LeadForm = () => {
 
   const editLeadRecord = async (lead: Lead) => {
     setFormHeading(EDIT_LEAD);
-
     setLeadId(lead.leadId);
-
     setClientId(lead.client.clientId);
-
     setMobileNo(lead.client.mobileNo);
-
     setEmailId(lead.client.email);
-
     setCountryId(lead.client.city.state.country.countryId);
-
-    setProductId(
-      lead.interestedProduct.productId
-    );
-
-    setLeadStatusId(
-      lead.leadStatus.leadStatusId
-    );
-
-    setExpectedBudget(
-      lead.expectedBudget
-    );
-
-    setPriorityLevel(
-      lead.priorityLevel
-    );
-
-    setInputValue(
-      "txtExpectedBudget",
-      lead.expectedBudget
-    );
-
-    setInputValue(
-      "txtExpectedClosureDate",
-      lead.expectedClosureDate
-    );
-
-    setInputValue(
-      "txtRemarks",
-      lead.remarks ?? ""
-    );
-
-    setFocus("txtClientName");
+    setProductId(lead.interestedProduct.productId);
+    setLeadStatusId(lead.leadStatus.leadStatusId);
+    setLeadSourceId(lead.leadSource.leadSourceId);
+    setExpectedBudget(lead.expectedBudget);
+    setPriorityLevel(lead.priorityLevel);
+    setInputValue("txtExpectedBudget",lead.expectedBudget);
+    setInputValue("txtExpectedClosureDate",lead.expectedClosureDate);
+    setInputValue("txtRemarks",lead.remarks ?? "");
+    setFocus("countriesCombo");
   };
 
-  const enableDeleteLead = (
-    leadId: number
-  ) => {
+  const enableDeleteLead = (leadId: number) => 
+  {
     setDeleteLeadId(leadId);
-
     setShowDialogBox(true);
   };
 
-  const doDeleteLead = async () => {
-    try {
-      const url =
-        getServerIP() +
-        BIZ_CONNECT_API_PATH +
-        "lead/delete_lead/" +
-        deleteLeadId;
-
-      const response =
-        await adminApi.delete(url);
-
+  const doDeleteLead = async () => 
+  {
+    try 
+    {
+      const url = getServerIP() + BIZ_CONNECT_API_PATH + "lead/delete_lead/" + deleteLeadId;
+      const response = await adminApi.delete(url);
       const data = response.data;
-
-      if (data.code === 0) {
-        showMessage(
-          true,
-          DELETE_MSG_TITLE,
-          data.message,
-          ""
-        );
-
+      if (data.code === 0) 
+      {
+        showMessage(true,DELETE_MSG_TITLE,data.message,"");
         setShowDialogBox(false);
-
-        displayLeadRecords();
-
+        displayLeadRecords(countryId);
         clearAll();
-      } else {
-        showMessage(
-          true,
-          ERROR_MSG_TITLE,
-          data.message,
-          ""
-        );
+      } else 
+      {
+        showMessage(true,ERROR_MSG_TITLE,data.message,"");
       }
     } catch (err) {
       handleError(err);
@@ -332,19 +213,7 @@ const LeadForm = () => {
   const country_change = async(country_id:number)=>
   {
     setCountryId(country_id);
-    const url= getServerIP() + BIZ_CONNECT_API_PATH + "client/get_all_clients_by_country/" + country_id;
-    try
-    {
-      const response = await adminApi.get(url);
-      const data: Client[] = response.data;
-      if (data && data.length > 0) 
-      {
-        setClientList(data);
-      }
-    } catch (err) 
-    {
-      handleError(err);
-    }
+    displayLeadRecords(country_id);
   }
 
   const client_change = async(client_id:number)=>
@@ -369,12 +238,10 @@ const LeadForm = () => {
       </ConfirmDialogBox>
 
       <FormContent>
-
         <Box>
           <FormCell>
             <ReInputLabel labelValue="Country" />
           </FormCell>
-
           <FormCell>
             <ReSelect id="countriesCombo" value={countryId} options={countries}
               getOptionLabel={(opt: Country) => opt.countryName } 
@@ -385,50 +252,38 @@ const LeadForm = () => {
           <FormCell>
             <ReInputLabel labelValue="Client" />
           </FormCell>
-
           <FormCell>
-             <ReSelect id="clientsCombo" value={clientId} options={clientList}
-              getOptionLabel={(opt: Client) => opt.companyName } 
-              getOptionValue={(opt: Client) => opt.clientId } width="250px"
-              onChange={(e) => client_change(Number(e.target.value)) }
+            <ReSelect id="clientsCombo" value={clientId} options={clientList} 
+              getOptionLabel={(opt: Client) => opt.companyName } getOptionValue={(opt: Client) => opt.clientId } 
+              width="250px" onChange={(e) => client_change(Number(e.target.value)) }
             />
           </FormCell>
-
           <FormCell>
             <ReInputLabel labelValue="Mobile No" />
           </FormCell>
-
           <FormCell>
             <ReTextField id="txtMobileNo" type="text" width="180px" value={mobileNo} disabled={true} />
           </FormCell>
         </Box>
-
         <Box>
           <FormCell>
             <ReInputLabel labelValue="Email" />
           </FormCell>
-
           <FormCell>
             <ReTextField id="txtEmailId" type="email" width="220px" value={emailId}  disabled={true} />
           </FormCell>
-
           <FormCell>
             <ReInputLabel labelValue="Product" />
           </FormCell>
-
           <FormCell>
             <ReSelect id="productsCombo" value={productId} options={products}
-              getOptionLabel={(opt: Product) => opt.productName }
-              getOptionValue={(opt: Product) => opt.productId   }
-              width="250px"
-              onChange={(e) => setProductId(Number(e.target.value))}
+              getOptionLabel={(opt: Product) => opt.productName } getOptionValue={(opt: Product) => opt.productId   }
+              width="250px" onChange={(e) => setProductId(Number(e.target.value))}
             />
           </FormCell>
-
           <FormCell>
             <ReInputLabel labelValue="Lead Status" />
           </FormCell>
-
           <FormCell>
             <ReSelect id="leadStatusCombo" value={leadStatusId} options={leadStatuses}
               getOptionLabel={(opt: LeadStatus) => opt.statusName}
@@ -437,12 +292,10 @@ const LeadForm = () => {
             />
           </FormCell>
         </Box>
-
         <Box>
           <FormCell>
             <ReInputLabel labelValue="Lead Source" />
           </FormCell>
-
           <FormCell>
             <ReSelect id="leadSourceCombo" value={leadSourceId} options={leadSources}
               getOptionLabel={(opt: LeadSource) => opt.sourceName} 
@@ -450,23 +303,12 @@ const LeadForm = () => {
               onChange={(e) => setLeadSourceId(Number(e.target.value))}
             />
           </FormCell>
-
           <FormCell>
             <ReInputLabel labelValue="Expected Budget" />
           </FormCell>
-
           <FormCell>
-            <ReTextField
-              id="txtExpectedBudget"
-              type="number"
-              width="150px"
-              value={expectedBudget}
-              onChange={(e) =>
-                setExpectedBudget(
-                  Number(e.target.value)
-                )
-              }
-            />
+            <ReTextField id="txtExpectedBudget" type="number" width="150px" value={expectedBudget}
+              onChange={(e) => setExpectedBudget(Number(e.target.value))} />
           </FormCell>
 
           <FormCell>
@@ -474,11 +316,7 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell>
-            <ReTextField
-              id="txtExpectedClosureDate"
-              type="date"
-              width="180px"
-            />
+            <ReTextField id="txtExpectedClosureDate" type="date" width="180px"/>
           </FormCell>
         </Box>
 
@@ -488,22 +326,14 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell>
-            <ReSelect
-              id="priorityCombo"
-              value={priorityLevel}
-              width="180px"
+            <ReSelect id="priorityCombo" value={priorityLevel} width="180px"
               options={[
                 { value: "LOW", label: "LOW" },
                 { value: "MEDIUM", label: "MEDIUM" },
                 { value: "HIGH", label: "HIGH" },
               ]}
-              getOptionLabel={(opt) => opt.label}
-              getOptionValue={(opt) => opt.value}
-              onChange={(e) =>
-                setPriorityLevel(
-                  e.target.value
-                )
-              }
+              getOptionLabel={(opt) => opt.label} getOptionValue={(opt) => opt.value}
+              onChange={(e) => setPriorityLevel(e.target.value)}
             />
           </FormCell>
 
@@ -512,36 +342,15 @@ const LeadForm = () => {
           </FormCell>
 
           <FormCell colSpan={3}>
-            <ReTextField
-              id="txtRemarks"
-              type="multiline"
-              multiline
-              rows={3}
-              width="500px"
-            />
+            <ReTextField id="txtRemarks" type="multiline" multiline rows={3} width="500px"/>
           </FormCell>
         </Box>
 
         <Box>
           <FormCell colSpan={6}>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-              gap={1}
-            >
-              <ReButton
-                id="btnSave"
-                buttonType="Save"
-                label="Save"
-                onClick={saveLeadRecord}
-              />
-
-              <ReButton
-                id="btnClear"
-                buttonType="Refresh"
-                label="Clear"
-                onClick={clearAll}
-              />
+            <Box display="flex" justifyContent="flex-end" gap={1} >
+              <ReButton id="btnSave" buttonType="Save" label="Save" onClick={saveLeadRecord} />
+              <ReButton id="btnClear" buttonType="Refresh" label="Clear" onClick={clearAll} />
             </Box>
           </FormCell>
         </Box>
@@ -550,33 +359,12 @@ const LeadForm = () => {
           <FormCell colSpan={6}>
             <ListRecords showList={showLeadList} data={leadList}
               columns={[
-                { label: "Client",valueAccessor: (l: Lead) =>l.client.companyName },
-                { 
-                  label: "Mobile",
-                  valueAccessor: (l: Lead) =>
-                    l.client.mobileNo,
-                },
-                {
-                  label: "Product",
-                  valueAccessor: (l: Lead) =>
-                    l.interestedProduct.productName,
-                },
-                {
-                  label: "Status",
-                  valueAccessor: (l: Lead) =>
-                    l.leadStatus.statusName,
-                },
-                {
-                  label: "Budget",
-                  align: "right",
-                  valueAccessor: (l: Lead) =>
-                    l.expectedBudget.toFixed(2),
-                },
-                {
-                  label: "Priority",
-                  valueAccessor: (l: Lead) =>
-                    l.priorityLevel,
-                },
+                { label: "Client", valueAccessor: (l: Lead) =>l.client.companyName },
+                { label: "Mobile", valueAccessor: (l: Lead) =>l.client.mobileNo },
+                { label: "Product",valueAccessor: (l: Lead) =>l.interestedProduct.productName },
+                { label: "Status", valueAccessor: (l: Lead) =>l.leadStatus.statusName },
+                { label: "Budget", align: "right", valueAccessor: (l: Lead) => l.expectedBudget.toFixed(2) },
+                { label: "Priority", valueAccessor: (l: Lead) => l.priorityLevel }
               ]}
               tableHeight="45vh"
               showEditColumn={true}

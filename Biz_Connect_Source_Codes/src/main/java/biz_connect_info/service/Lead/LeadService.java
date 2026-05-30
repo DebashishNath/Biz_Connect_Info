@@ -33,4 +33,6 @@ public interface LeadService {
     List<Lead> getRecentLeads();
 
     List<Lead> getAllLeads();
+
+    List<Lead> getAllLeadsByCountry(Integer countryId);
 }

@@ -75,4 +75,10 @@ abstract class LeadServiceImpl implements LeadService {
     public List<Lead> getAllLeads() {
         return new LeadServiceDAL().getAllLeads();
     }
+
+    @Override
+    public List<Lead> getAllLeadsByCountry(Integer countryId)
+    {
+        return new LeadServiceDAL().getAllLeadsByCountry(countryId);
+    }
 }

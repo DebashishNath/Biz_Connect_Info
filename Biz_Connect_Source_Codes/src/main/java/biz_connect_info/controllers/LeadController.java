@@ -1,7 +1,6 @@
 package biz_connect_info.controllers;
 
 import biz_connect_info.models.*;
-import biz_connect_info.service.Client.ClientService;
 import biz_connect_info.service.Country.CountryService;
 import biz_connect_info.service.Lead.LeadService;
 
@@ -60,9 +59,15 @@ public class LeadController {
         return leadService.getLeadById(leadId);
     }
 
-    @GetMapping("/list_leads")
+    @GetMapping("/get_all_leads")
     public List<Lead> getAllLeads() {
         return leadService.getAllLeads();
+    }
+
+    @GetMapping("/get_all_leads_by_country/{countryId}")
+    public List<Lead> getAllLeadsByCountry(@PathVariable("countryId") Integer countryId)
+    {
+        return leadService.getAllLeadsByCountry(countryId);
     }
 
     @RequestMapping(value="/lead_master_data", method = RequestMethod.GET)

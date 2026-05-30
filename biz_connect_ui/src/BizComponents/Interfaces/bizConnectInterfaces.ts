@@ -73,7 +73,7 @@ export interface Lead {
   client: Client;
   interestedProduct: Product;
   leadStatus: LeadStatus;
-  leadSource: string;
+  leadSource: LeadSource;
   expectedBudget: number;
   expectedClosureDate: string;
   priorityLevel: PriorityLevel;

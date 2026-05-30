@@ -242,4 +242,16 @@ class LeadServiceDAL extends LeadServiceImpl {
             return null;
         }
     }
+
+    @Override
+    public List<Lead> getAllLeadsByCountry(Integer countryId)
+    {
+        try
+        {
+            return leadRep.findByClientCityStateCountryCountryId(countryId);
+        } catch (Exception ex) {
+            System.out.println("Error Is: " + ex.getMessage());
+            return null;
+        }
+    }
 }

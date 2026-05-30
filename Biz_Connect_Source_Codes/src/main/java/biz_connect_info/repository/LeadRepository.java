@@ -31,4 +31,6 @@ public interface LeadRepository extends JpaRepository<Lead, Long> {
     List<Lead> findTop10ByOrderByCreatedAtDesc();
 
     List<Lead> findByRemarksContainingIgnoreCase(String remarks);
+
+    List<Lead> findByClientCityStateCountryCountryId(Integer countryId);
 }
