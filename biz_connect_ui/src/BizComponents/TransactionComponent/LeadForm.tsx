@@ -27,10 +27,10 @@ const LeadForm = () => {
   const [leadList, setLeadList] = useState<Lead[]>([]);
   const [clientList, setClientList] = useState<Client[]>([]);
   const [deleteLeadId, setDeleteLeadId] = useState<number>(0);
+  const [isCountryDisabled, setIsCountryDisabled] = useState<boolean>(false);
+  const [isClientDisabled, setIsClientDisabled] = useState<boolean>(false);
   const [showDialogBox, setShowDialogBox] = useState<boolean>(false);
-
   const { showMessageBox,title,displayMessage,showMessage,handleCloseMessageBox } = useMessageHandler();
-
   const { countries,products,leadStatuses,leadSources,loading,error } = useLeadMasterInitData();
 
   const handleError = useCallback(
@@ -47,6 +47,7 @@ const LeadForm = () => {
 
   const displayLeadRecords = async (country_id:number) => 
   {
+    setLeadList([]);
     try 
     {
       const url = getServerIP() + BIZ_CONNECT_API_PATH + "lead/get_all_leads_by_country/" + country_id;
@@ -63,17 +64,21 @@ const LeadForm = () => {
 
   const clearAll = () => {
     setLeadId(0);
+    setCountryId(0);
+    setClientId(0);
+    setClientList([]);
     setMobileNo("");
     setEmailId("");
-    setCountryId(0);
     setProductId(0);
     setLeadStatusId(0);
     setLeadSourceId(0);
     setExpectedBudget(0);
-    setPriorityLevel("MEDIUM");
+    setPriorityLevel("");
     clearAllTextFields();
     setFormHeading(ADD_LEAD);
     setShowLeadList(false);
+    setIsCountryDisabled(false);
+    setIsClientDisabled(false);
     setFocus("countriesCombo");
   };
 
@@ -107,7 +112,11 @@ const LeadForm = () => {
       showMessage(true,ERROR_MSG_TITLE,"Lead Source selection required","leadSourceCombo");
       return false;
     }
-
+    if(priorityLevel.trim().length === 0)
+    {
+      showMessage(true,ERROR_MSG_TITLE,"Priority selection required","priorityCombo");
+      return false;
+    }
     return true;
   };
 
@@ -152,7 +161,8 @@ const LeadForm = () => {
     }
   };
 
-  const editLeadRecord = async (lead: Lead) => {
+  const editLeadRecord = async (lead: Lead) => 
+  {
     setFormHeading(EDIT_LEAD);
     setLeadId(lead.leadId);
     setClientId(lead.client.clientId);
@@ -168,6 +178,8 @@ const LeadForm = () => {
     setInputValue("txtExpectedClosureDate",lead.expectedClosureDate);
     setInputValue("txtRemarks",lead.remarks ?? "");
     setFocus("countriesCombo");
+    setIsCountryDisabled(true);
+    setIsClientDisabled(true);
   };
 
   const enableDeleteLead = (leadId: number) => 
@@ -213,18 +225,42 @@ const LeadForm = () => {
   const country_change = async(country_id:number)=>
   {
     setCountryId(country_id);
+    displayAllClientsByCountry(country_id);
     displayLeadRecords(country_id);
   }
 
-  const client_change = async(client_id:number)=>
+  const displayAllClientsByCountry = async(country_id:number) => 
   {
-    setClientId(clientId);
-    const selectedClient = clientList.find((client) => client.clientId === client_id);
-    if(selectedClient){
+    try 
+    {
+      const url = getServerIP() + BIZ_CONNECT_API_PATH + "client/get_all_clients_by_country/" + country_id;
+      const response = await adminApi.get(url);
+      if(response && response.data && response.data.length > 0)
+      {
+        setClientList(response.data);
+      }
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  const client_change = async (client_id: number) => 
+  {
+    // Editing existing lead
+    if (leadId > 0) {
+        return;
+    }
+
+    setClientId(client_id);
+
+    const selectedClient = clientList.find(client => client.clientId === client_id);
+
+    if (selectedClient) 
+    {
       setMobileNo(selectedClient.mobileNo);
       setEmailId(selectedClient.email);
     }
-  }
+  };
 
   return (
     <FormTemplate width={"90%"} heading={formHeading} onClose={() => setOpen(false)}>
@@ -244,9 +280,9 @@ const LeadForm = () => {
           </FormCell>
           <FormCell>
             <ReSelect id="countriesCombo" value={countryId} options={countries}
-              getOptionLabel={(opt: Country) => opt.countryName } 
-              getOptionValue={(opt: Country) => opt.countryId } width="220px"
-              onChange={(e) => country_change(Number(e.target.value)) }
+              getOptionLabel={(opt: Country) => opt.countryName } getOptionValue={(opt: Country) => opt.countryId } 
+              width="220px" onChange={(e) => country_change(Number(e.target.value)) }
+              disabled={isCountryDisabled}
             />
           </FormCell>
           <FormCell>
@@ -255,7 +291,7 @@ const LeadForm = () => {
           <FormCell>
             <ReSelect id="clientsCombo" value={clientId} options={clientList} 
               getOptionLabel={(opt: Client) => opt.companyName } getOptionValue={(opt: Client) => opt.clientId } 
-              width="250px" onChange={(e) => client_change(Number(e.target.value)) }
+              width="250px" onChange={(e) => client_change(Number(e.target.value)) } disabled={isClientDisabled}
             />
           </FormCell>
           <FormCell>
